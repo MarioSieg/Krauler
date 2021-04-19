@@ -5,7 +5,7 @@ using Krauler.Crawlers;
 
 namespace Krauler
 {
-    internal class Program
+    internal static class Program
     {
         private static async Task Main(string[] args)
         {
@@ -14,11 +14,11 @@ namespace Krauler
                 Directory.SetCurrentDirectory("../../../");
                 Logger.Instance.WriteLine("Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!");
 
-                await ICrawler.ConstructAndDispatchAsync<YoutubeCrawler>();
+                await Crawler.ConstructAndDispatchAsync<YoutubeCrawler>();
             }
             catch (Exception e)
             {
-                Logger.Instance.WriteLine(e.Message, LogLevel.Error);
+                Logger.Instance.Write(e);
                 Logger.Instance.Flush();
             }
         }

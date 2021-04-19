@@ -28,6 +28,11 @@ namespace Krauler
         public string LogFile { get; set; }
         public string Stream { get; private set; } = "";
 
+        public void Write(Exception ex)
+        {
+            WriteLine(ex.Message, LogLevel.Error);
+        }
+
         public void Write(string message, LogLevel level = LogLevel.Info)
         {
             message = $"[{DateTime.Now.ToString(CultureInfo.CurrentCulture)} {level.ToString()}]: {message}";

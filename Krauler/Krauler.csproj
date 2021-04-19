@@ -3,9 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="90.0.4430.2400" />
     <PackageReference Include="Selenium.WebDriverBackedSelenium" Version="4.0.0-beta2" />
   </ItemGroup>

@@ -9,9 +9,7 @@ namespace Krauler
     /// </summary>
     public sealed class ParallelJobQueue
     {
-        public ParallelJobQueue()
-        {
-        }
+        public ParallelJobQueue() { }
 
         public ParallelJobQueue(List<Action> crawlers)
         {

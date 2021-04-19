@@ -9,6 +9,26 @@ namespace Krauler
     /// </summary>
     public abstract class Crawler
     {
+        private string _childName;
+        private object? _config;
+
+        /// <summary>
+        ///     Construct with constant data.
+        /// </summary>
+        /// <param name="name">Name of the crawler.</param>
+        /// <param name="description">Short description on what it crawls.</param>
+        /// <param name="url"></param>
+        protected Crawler(string name, string description)
+        {
+            Name = name;
+            Description = description;
+            ServerHeader = new ServerHeader
+            {
+                Uri = new Uri("localhost:8080"),
+                Locked = false
+            };
+        }
+
         /// <summary>
         ///     Name of the crawler.
         /// </summary>
@@ -25,16 +45,22 @@ namespace Krauler
         public ServerHeader ServerHeader { get; protected set; }
 
         /// <summary>
-        /// Construct with constant data.
+        ///     Initialize config type and try to load the file.
         /// </summary>
-        /// <param name="name">Name of the crawler.</param>
-        /// <param name="description">Short description on what it crawls.</param>
-        /// <param name="serverHeader">Target address/server header.</param>
-        protected Crawler(string name, string description, in ServerHeader serverHeader)
+        /// <typeparam name="TSelf"></typeparam>
+        /// <typeparam name="TConfig"></typeparam>
+        /// <returns></returns>
+        protected TConfig InitializeConfig<TSelf, TConfig>() where TConfig : BaseConfig, new()
         {
-            Name = name;
-            Description = description;
-            ServerHeader = serverHeader;
+            _childName = typeof(TSelf).Name;
+            var cfg = DeserializeConfig<TConfig>();
+            _config = cfg;
+            return cfg;
+        }
+
+        protected TConfig? GetConfig<TConfig>()
+        {
+            return (TConfig?) _config;
         }
 
         /// <summary>
@@ -101,14 +127,40 @@ namespace Krauler
         /// <summary>
         ///     Called when the crawler should start crawling :D
         /// </summary>
-        public virtual void OnDispatch()
-        {
-
-        }
+        public virtual void OnDispatch() { }
 
         /// <summary>
         ///     Called when the crawler is destroyed.
         /// </summary>
         public abstract void OnDestroy();
+
+        public void SerializeConfig<T>(in T? data)
+        {
+            try
+            {
+                Config.Serialize(data, _childName);
+            }
+            catch
+            {
+                Logger.Instance.WriteLine($"Failed to serialize config for object {_childName}", LogLevel.Warning);
+            }
+        }
+
+        public T DeserializeConfig<T>() where T : new()
+        {
+            try
+            {
+#pragma warning disable CS8603 // Possible null reference return.
+                return Config.Deserialize<T>(_childName);
+#pragma warning restore CS8603 // Possible null reference return.
+            }
+            catch
+            {
+                Logger.Instance.WriteLine($"Failed to serialize config for object {_childName}", LogLevel.Warning);
+                var cfg = new T();
+                SerializeConfig(cfg);
+                return cfg;
+            }
+        }
     }
 }
