@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -6,7 +7,7 @@ namespace Krauler
 {
     public class YoutubeCrawler : ICrawler
     {
-        private const int TabCount = 32;
+        private const int TabCount = 10;
 
         private ChromeDriver _chromeDriver;
         public string Name => "YoutubeCrawler";
@@ -47,12 +48,28 @@ namespace Krauler
             {
                 _chromeDriver.SwitchTo().Window(handle);
                 _chromeDriver.Navigate().GoToUrl(ServerHeader.Uri);
+                
+               // _chromeDriver.FindElementByTagName("button").Click();
+                //Thread.Sleep(1000);
+                
             }
+            foreach (var handle in _chromeDriver.WindowHandles)
+            {
+                _chromeDriver.SwitchTo().Window(handle);
+                _chromeDriver.FindElementByTagName("button").Click();
+            }
+            
+            // foreach (var handle in _chromeDriver.WindowHandles)
+            // {
+            //     _chromeDriver.SwitchTo().Window(handle);
+            //     //Thread.Sleep(1000);
+            //     _chromeDriver.FindElementById("dismiss-button").Click();
+            // }
         }
 
         public void OnDestroy()
         {
-            _chromeDriver.Quit();
+            //_chromeDriver.Quit();
         }
     }
 }
