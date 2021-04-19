@@ -1,31 +1,27 @@
 ﻿using System;
-using System.Threading.Tasks;
-
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace Krauler.Crawlers
 {
-    public class YoutubeCrawler : ICrawler
+    public class YoutubeCrawler : Crawler
     {
-        private const int TabCount = 10;
-
+        private readonly int _tabCount = 10;
         private ChromeDriver _chromeDriver;
-        public string Name => "YoutubeCrawler";
 
-        public string Description => "";
-
-        public ServerHeader ServerHeader => new()
+        public YoutubeCrawler() : base("YoutubeCrawler", "", new ServerHeader
         {
             Uri = new Uri("https://www.youtube.com/watch?v=6MvcwAvZ1nY"),
             Locked = false
-        };
+        })
+        {
+        }
 
-        public void OnInitialize()
+        public override void OnInitialize()
         {
             var service = ChromeDriverService.CreateDefaultService();
             service.HideCommandPromptWindow = true;
-            var options = new ChromeOptions { PageLoadStrategy = PageLoadStrategy.Normal };
+            var options = new ChromeOptions {PageLoadStrategy = PageLoadStrategy.Normal};
             options.AddArgument("--window-size=800,600");
             options.AddArgument("--no-sandbox");
             options.AddArgument("--disable-gpu");
@@ -38,11 +34,12 @@ namespace Krauler.Crawlers
             options.AddArgument("--output=/dev/null");
             options.AddArgument("--silent");
             _chromeDriver = new ChromeDriver(service, options);
+        }
 
-            // options.AddArgument("--headless");
-
+        public override void OnDispatch()
+        {
             // Create tabs:
-            for (var i = 0; i < TabCount; ++i) ((IJavaScriptExecutor)_chromeDriver).ExecuteScript("window.open();");
+            for (var i = 0; i < _tabCount; ++i) ((IJavaScriptExecutor) _chromeDriver).ExecuteScript("window.open();");
 
             // Goto url on each tab:
             foreach (var handle in _chromeDriver.WindowHandles)
@@ -58,9 +55,9 @@ namespace Krauler.Crawlers
             }
         }
 
-        public void OnDestroy()
+        public override void OnDestroy()
         {
-            //_chromeDriver.Quit();
+            _chromeDriver.Quit();
         }
     }
 }

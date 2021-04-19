@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Krauler
 {
     /// <summary>
-    ///   Job queue which can be processed in parallel.
+    ///     Job queue which can be processed in parallel.
     /// </summary>
     public sealed class ParallelJobQueue
     {
@@ -33,10 +33,7 @@ namespace Krauler
 
         public void Dispatch()
         {
-            Parallel.ForEach(EnqueuedCrawlers, x =>
-                {
-                    x();
-                }
+            Parallel.ForEach(EnqueuedCrawlers, x => { x(); }
             );
         }
 
