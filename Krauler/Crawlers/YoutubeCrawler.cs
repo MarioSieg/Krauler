@@ -57,31 +57,43 @@ namespace Krauler.Crawlers
         {
             // Create tabs:
             for (var i = 0; i < _config.TabCount - 1; ++i)
+            {
                 _ = ((IJavaScriptExecutor?) _chromeDriver)?.ExecuteScript("window.open();");
+                Logger.Instance.WriteLine($"Creating tab: {i + 1}");
+            }
 
             // Goto url on each tab:
             if (_chromeDriver?.WindowHandles == null) throw new ArgumentNullException("WindowHandles is null");
-            
+
+            uint j = 0;
             foreach (var handle in _chromeDriver?.WindowHandles!)
             {
                 _chromeDriver.SwitchTo().Window(handle);
                 _chromeDriver.Navigate().GoToUrl(_config.ServerHeader.Uri);
+                Logger.Instance.WriteLine($"Opening URL {++j}");
             }
 
+            // Confirm google usage
             foreach (var handle in _chromeDriver.WindowHandles)
             {
                 try
                 {
                     _chromeDriver.SwitchTo().Window(handle);
                     _chromeDriver.FindElementByTagName("button").Click();
+                    Logger.Instance.WriteLine($"Confirmed google usage {++j}");
                 }
                 catch (Exception ex)
                 {
                     Logger.Instance.Write(ex);
                 }
             }
+
+
             var wait = new WebDriverWait(_chromeDriver, new TimeSpan(0, 0, 30));
-            
+
+            j = 0;
+
+            // Confirm youtube usage
             foreach (var handle in _chromeDriver.WindowHandles)
             {
                 try
@@ -91,6 +103,7 @@ namespace Krauler.Crawlers
                     _chromeDriver.FindElementById("dismiss-button").Click();
                     wait.Until(_ => ((IJavaScriptExecutor)_chromeDriver).ExecuteScript("return document.readyState").Equals("complete"));
                     _chromeDriver.FindElementById("player-container").Click();
+                    Logger.Instance.WriteLine($"Confirmed google usage {++j}");
                 }
                 catch (Exception ex)
                 {
