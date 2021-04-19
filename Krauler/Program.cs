@@ -205,8 +205,6 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using System.Threading;
-
 namespace Krauler
 {
     internal class Program
@@ -214,8 +212,10 @@ namespace Krauler
         private static void Main(string[] args)
         {
             Logger.Instance.WriteLine("Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!");
-            ParallelJobQueue jobQueue = new ParallelJobQueue();
-            jobQueue.Enqueue<>();
+            var jobQueue = new ParallelJobQueue();
+            jobQueue.Enqueue<TestCrawler>();
+            jobQueue.Dispatch(1000);
+            jobQueue.Clear();
 
             Logger.Instance.Flush();
         }

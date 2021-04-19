@@ -235,7 +235,7 @@ namespace Krauler
         /// <summary>
         ///     Called when the crawler should start crawling :D
         /// </summary>
-        public void Update();
+        public void Update(int i);
 
         /// <summary>
         ///     Called when the crawler is destroyed.

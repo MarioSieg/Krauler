@@ -233,31 +233,33 @@ namespace Krauler
             set => EnqueuedCrawlers[idx] = value;
         }
 
-        public void Enqueue<T>() where T: ICrawler, new()
+        public void Enqueue<T>() where T : ICrawler, new()
         {
             var crawler = new T();
             crawler.OnCreate();
             EnqueuedCrawlers.Add(crawler);
         }
 
-        public void UpdateAll()
+        public void Dispatch(int times)
         {
-            Parallel.ForEach(EnqueuedCrawlers, x =>
+            Parallel.For(0, times, new ParallelOptions
             {
-                x.Update();
-            });
+                MaxDegreeOfParallelism = Environment.ProcessorCount
+            }, i => { EnqueuedCrawlers[i % EnqueuedCrawlers.Count].Update(i); });
         }
 
         public bool Dequeue<T>(T t) where T : ICrawler, new()
         {
-            if (!EnqueuedCrawlers.Contains(t))
-            {
-                return false;
-            }
+            if (!EnqueuedCrawlers.Contains(t)) return false;
 
             var crawler = EnqueuedCrawlers[EnqueuedCrawlers.IndexOf(t)];
             crawler.OnShutdown();
             return EnqueuedCrawlers.Remove(crawler);
+        }
+
+        public void Clear()
+        {
+            EnqueuedCrawlers.Clear();
         }
     }
 }
