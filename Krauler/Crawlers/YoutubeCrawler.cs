@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace Krauler.Crawlers
 {
@@ -47,6 +50,7 @@ namespace Krauler.Crawlers
             var options = new ChromeOptions {PageLoadStrategy = _config.PageLoadStrategy};
             options.AddArguments(_config.ChromeOptions);
             _chromeDriver = new ChromeDriver(service, options);
+            _chromeDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
         public override void OnDispatch()
@@ -66,7 +70,6 @@ namespace Krauler.Crawlers
 
             foreach (var handle in _chromeDriver.WindowHandles)
             {
-                
                 try
                 {
                     _chromeDriver.SwitchTo().Window(handle);
@@ -77,10 +80,28 @@ namespace Krauler.Crawlers
                     Logger.Instance.Write(ex);
                 }
             }
+            var wait = new WebDriverWait(_chromeDriver, new TimeSpan(0, 0, 30));
+            
+            foreach (var handle in _chromeDriver.WindowHandles)
+            {
+                try
+                {
+                    _chromeDriver.SwitchTo().Window(handle);
+                    //var quit = _chromeDriver.FindElementById("dismiss-button").Displayed;
+                    _chromeDriver.FindElementById("dismiss-button").Click();
+                    wait.Until(_ => ((IJavaScriptExecutor)_chromeDriver).ExecuteScript("return document.readyState").Equals("complete"));
+                    _chromeDriver.FindElementById("player-container").Click();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Instance.Write(ex);
+                }
+            }
         }
 
         public override void OnDestroy()
         {
+            //Thread.Sleep(20000);
             //_chromeDriver?.Quit();
         }
     }
