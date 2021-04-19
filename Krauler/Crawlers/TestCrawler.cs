@@ -1,4 +1,4 @@
-﻿namespace Krauler
+﻿namespace Krauler.Crawlers
 {
     internal class TestCrawler : ICrawler
     {

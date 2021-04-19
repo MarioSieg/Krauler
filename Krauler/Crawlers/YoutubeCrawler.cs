@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
+
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace Krauler
+namespace Krauler.Crawlers
 {
     public class YoutubeCrawler : ICrawler
     {
@@ -24,7 +25,7 @@ namespace Krauler
         {
             var service = ChromeDriverService.CreateDefaultService();
             service.HideCommandPromptWindow = true;
-            var options = new ChromeOptions {PageLoadStrategy = PageLoadStrategy.Normal};
+            var options = new ChromeOptions { PageLoadStrategy = PageLoadStrategy.Normal };
             options.AddArgument("--window-size=800,600");
             options.AddArgument("--no-sandbox");
             options.AddArgument("--disable-gpu");
@@ -41,30 +42,20 @@ namespace Krauler
             // options.AddArgument("--headless");
 
             // Create tabs:
-            for (var i = 0; i < TabCount; ++i) ((IJavaScriptExecutor) _chromeDriver).ExecuteScript("window.open();");
+            for (var i = 0; i < TabCount; ++i) ((IJavaScriptExecutor)_chromeDriver).ExecuteScript("window.open();");
 
             // Goto url on each tab:
             foreach (var handle in _chromeDriver.WindowHandles)
             {
                 _chromeDriver.SwitchTo().Window(handle);
                 _chromeDriver.Navigate().GoToUrl(ServerHeader.Uri);
-                
-               // _chromeDriver.FindElementByTagName("button").Click();
-                //Thread.Sleep(1000);
-                
             }
+
             foreach (var handle in _chromeDriver.WindowHandles)
             {
                 _chromeDriver.SwitchTo().Window(handle);
                 _chromeDriver.FindElementByTagName("button").Click();
             }
-            
-            // foreach (var handle in _chromeDriver.WindowHandles)
-            // {
-            //     _chromeDriver.SwitchTo().Window(handle);
-            //     //Thread.Sleep(1000);
-            //     _chromeDriver.FindElementById("dismiss-button").Click();
-            // }
         }
 
         public void OnDestroy()
