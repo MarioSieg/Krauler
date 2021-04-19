@@ -12,11 +12,9 @@ namespace Krauler
                 Directory.SetCurrentDirectory("../../../");
                 Logger.Instance.WriteLine("Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!");
                 var jobQueue = new ParallelJobQueue();
-                jobQueue.Enqueue<TestCrawler>();
                 jobQueue.Enqueue<YoutubeCrawler>();
-                
                 jobQueue.InitializeAllCrawlers();
-                jobQueue.Dispatch(100);
+                jobQueue.Dispatch(1);
                 jobQueue.DestroyAll();
             }
             catch(Exception e)

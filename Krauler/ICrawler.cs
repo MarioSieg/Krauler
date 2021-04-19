@@ -28,7 +28,10 @@
         /// <summary>
         ///     Called when the crawler should start crawling :D
         /// </summary>
-        public void OnDispatch(int i);
+        public void OnDispatch(int i)
+        {
+
+        }
 
         /// <summary>
         ///     Called when the crawler is destroyed.

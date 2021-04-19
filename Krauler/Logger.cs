@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using OpenQA.Selenium.DevTools;
 
 namespace Krauler
 {
@@ -22,6 +23,10 @@ namespace Krauler
         public Logger(string logFile)
         {
             LogFile = logFile;
+            if (File.Exists(LogFile))
+            {
+                File.Delete(LogFile);
+            }
         }
 
         public string LogFile { get; set; }

@@ -34,10 +34,11 @@ namespace Krauler
 
         public void InitializeAllCrawlers()
         {
-            foreach (var crawler in EnqueuedCrawlers)
+            Logger.Instance.WriteLine($"Initializing {EnqueuedCrawlers.Count} crawlers...", LogLevel.Warning);
+            Parallel.ForEach(EnqueuedCrawlers, x =>
             {
-                crawler.OnInitialize();
-            }
+                x.OnInitialize();
+            });
         }
 
         public void Dispatch(int times)
@@ -61,6 +62,10 @@ namespace Krauler
         public void DestroyAll()
         {
             Logger.Instance.WriteLine($"Destroying {EnqueuedCrawlers.Count} crawlers...", LogLevel.Warning);
+            Parallel.ForEach(EnqueuedCrawlers, x =>
+            {
+                x.OnDestroy();
+            });
             EnqueuedCrawlers.Clear();
         }
     }

@@ -17,7 +17,6 @@ namespace Krauler
         public string PathAndQuery => Uri.PathAndQuery;
         public string Query => Uri.Query;
 
-
         public static readonly ServerHeader DefaultTargetNoProxy = new()
         {
             Uri = new Uri("localhost:8080"),
