@@ -9,7 +9,7 @@ namespace Krauler.Crawlers
     {
         public bool ChromeDriverHideCommandPromptWindow = true;
 
-        public List<string> ChromeOptions = new()
+        public readonly List<string> ChromeOptions = new()
         {
             "--window-size=800,600",
             "--no-sandbox",
@@ -25,7 +25,7 @@ namespace Krauler.Crawlers
         };
 
         public PageLoadStrategy PageLoadStrategy = PageLoadStrategy.Normal;
-        public byte TabCount = 10;
+        public byte TabCount = 6;
 
         public YoutubeCrawlerConfig() : base("https://www.youtube.com/watch?v=6MvcwAvZ1nY") { }
     }
@@ -56,13 +56,17 @@ namespace Krauler.Crawlers
                 _ = ((IJavaScriptExecutor?) _chromeDriver)?.ExecuteScript("window.open();");
 
             // Goto url on each tab:
-            foreach (var handle in _chromeDriver?.WindowHandles)
+            if (_chromeDriver?.WindowHandles == null) throw new ArgumentNullException("WindowHandles is null");
+            
+            foreach (var handle in _chromeDriver?.WindowHandles!)
             {
                 _chromeDriver.SwitchTo().Window(handle);
-                _chromeDriver.Navigate().GoToUrl(ServerHeader.Uri);
+                _chromeDriver.Navigate().GoToUrl(_config.ServerHeader.Uri);
             }
 
             foreach (var handle in _chromeDriver.WindowHandles)
+            {
+                
                 try
                 {
                     _chromeDriver.SwitchTo().Window(handle);
@@ -72,11 +76,12 @@ namespace Krauler.Crawlers
                 {
                     Logger.Instance.Write(ex);
                 }
+            }
         }
 
         public override void OnDestroy()
         {
-            _chromeDriver?.Quit();
+            //_chromeDriver?.Quit();
         }
     }
 }

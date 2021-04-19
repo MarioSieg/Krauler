@@ -22,11 +22,6 @@ namespace Krauler
         {
             Name = name;
             Description = description;
-            ServerHeader = new ServerHeader
-            {
-                Uri = new Uri("localhost:8080"),
-                Locked = false
-            };
         }
 
         /// <summary>
@@ -38,12 +33,7 @@ namespace Krauler
         ///     Short description on what it crawls.
         /// </summary>
         public string Description { get; protected set; }
-
-        /// <summary>
-        ///     Target address/server header.
-        /// </summary>
-        public ServerHeader ServerHeader { get; protected set; }
-
+        
         /// <summary>
         ///     Initialize config type and try to load the file.
         /// </summary>
