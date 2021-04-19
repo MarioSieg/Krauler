@@ -8,17 +8,17 @@
 
         public ServerHeader ServerHeader => ServerHeader.DefaultTargetNoProxy;
 
-        public void OnCreate()
+        public void OnInitialize()
         {
             Logger.Instance.WriteLine($"Created crawler with name: {Name}");
         }
 
-        public void Update(int i)
+        public void OnDispatch(int i)
         {
             Logger.Instance.WriteLine($"Update {i} on crawler with name: {Name}");
         }
 
-        public void OnShutdown()
+        public void OnDestroy()
         {
             Logger.Instance.WriteLine($"Destroyed crawler with name: {Name}");
         }

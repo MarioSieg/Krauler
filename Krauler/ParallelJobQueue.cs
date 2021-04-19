@@ -29,16 +29,24 @@ namespace Krauler
         public void Enqueue<T>() where T : ICrawler, new()
         {
             var crawler = new T();
-            crawler.OnCreate();
             EnqueuedCrawlers.Add(crawler);
+        }
+
+        public void InitializeAllCrawlers()
+        {
+            foreach (var crawler in EnqueuedCrawlers)
+            {
+                crawler.OnInitialize();
+            }
         }
 
         public void Dispatch(int times)
         {
+            Logger.Instance.WriteLine($"Dispatching {EnqueuedCrawlers.Count} crawlers...", LogLevel.Warning);
             Parallel.For(0, times, new ParallelOptions
             {
                 MaxDegreeOfParallelism = Environment.ProcessorCount
-            }, i => { EnqueuedCrawlers[i % EnqueuedCrawlers.Count].Update(i); });
+            }, i => { EnqueuedCrawlers[i % EnqueuedCrawlers.Count].OnDispatch(i); });
         }
 
         public bool Dequeue<T>(T t) where T : ICrawler, new()
@@ -46,12 +54,13 @@ namespace Krauler
             if (!EnqueuedCrawlers.Contains(t)) return false;
 
             var crawler = EnqueuedCrawlers[EnqueuedCrawlers.IndexOf(t)];
-            crawler.OnShutdown();
+            crawler.OnDestroy();
             return EnqueuedCrawlers.Remove(crawler);
         }
 
-        public void Clear()
+        public void DestroyAll()
         {
+            Logger.Instance.WriteLine($"Destroying {EnqueuedCrawlers.Count} crawlers...", LogLevel.Warning);
             EnqueuedCrawlers.Clear();
         }
     }

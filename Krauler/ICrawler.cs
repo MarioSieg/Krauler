@@ -23,16 +23,16 @@
         /// <summary>
         ///     Called when the crawler is created.
         /// </summary>
-        public void OnCreate();
+        public void OnInitialize();
 
         /// <summary>
         ///     Called when the crawler should start crawling :D
         /// </summary>
-        public void Update(int i);
+        public void OnDispatch(int i);
 
         /// <summary>
         ///     Called when the crawler is destroyed.
         /// </summary>
-        public void OnShutdown();
+        public void OnDestroy();
     }
 }

@@ -44,6 +44,7 @@ namespace Krauler
                 _ => Console.ForegroundColor
             };
             Console.Write(message);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void WriteLine(string message, LogLevel level = LogLevel.Info)
@@ -64,6 +65,7 @@ namespace Krauler
                 _ => Console.ForegroundColor
             };
             Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void Clear()
