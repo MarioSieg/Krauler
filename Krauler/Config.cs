@@ -23,6 +23,7 @@ namespace Krauler
     public static class Config
     {
         public static string ConfigDir = "Config/";
+        public static string ResourcesDir = "resources/";
 
         static Config()
         {
@@ -47,4 +48,5 @@ namespace Krauler
             return JsonConvert.DeserializeObject<T?>(raw);
         }
     }
+    
 }

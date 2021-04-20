@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Krauler
 {
     /// <summary>
-    ///     Base interface for all crawlers.
+    ///     Base class for all crawlers.
     /// </summary>
     public abstract class Crawler
     {
         private string _childName;
         private object? _config;
+        public readonly Lazy<List<string>> Proxy = new(() => FileLoader(Config.ResourcesDir + "proxyList.txt"));
 
         /// <summary>
         ///     Construct with constant data.
@@ -33,7 +37,9 @@ namespace Krauler
         ///     Short description on what it crawls.
         /// </summary>
         public string Description { get; protected set; }
-        
+
+        public List<string> ProxyInitialized => Proxy.Value;
+
         /// <summary>
         ///     Initialize config type and try to load the file.
         /// </summary>
@@ -151,6 +157,23 @@ namespace Krauler
                 SerializeConfig(cfg);
                 return cfg;
             }
+        }
+        
+        public static List<string> FileLoader(string filePath){
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException($"Failed to find file \"{filePath}\"", filePath);
+            var list = new List<string>();
+            using var reader = new StreamReader(File.OpenRead(filePath));
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                if (line?.Length > 0)
+                    list.Add((string) line);
+            }
+            
+            if (list.Count == 0)
+                throw new FileLoadException($"File is empty:  \"{filePath}\"", filePath);
+            return list;
         }
     }
 }
