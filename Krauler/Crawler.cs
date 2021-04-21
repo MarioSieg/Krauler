@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenQA.Selenium;
 
 namespace Krauler
 {
@@ -13,10 +10,13 @@ namespace Krauler
     /// </summary>
     public abstract class Crawler
     {
-        private string _childName;
-        private object? _config;
         public readonly Lazy<string[]> Proxies = new(() => File.ReadAllLines(Config.ResourcesDir + "proxyList.txt"));
-        public readonly Lazy<string[]> UserAgents = new(() => File.ReadAllLines(Config.ResourcesDir + "userAgents.txt"));
+
+        public readonly Lazy<string[]>
+            UserAgents = new(() => File.ReadAllLines(Config.ResourcesDir + "userAgents.txt"));
+
+        private string? _childName;
+        private object? _config;
 
         /// <summary>
         ///     Construct with constant data.
@@ -53,7 +53,7 @@ namespace Krauler
             _config = cfg;
             return cfg;
         }
-        
+
         protected TConfig? GetConfig<TConfig>()
         {
             return (TConfig?) _config;
