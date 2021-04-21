@@ -11,8 +11,8 @@ namespace Krauler.Crawlers
     {
         public bool ChromeDriverHideCommandPromptWindow = true;
         
-        public bool UseProxy = true;
-        public bool SetUserAgent = false;
+        public bool UseProxy = false;
+        public readonly bool SetUserAgent = true;
         
         public readonly List<string> DefaultChromeOptions = new()
         {
@@ -39,7 +39,7 @@ namespace Krauler.Crawlers
     public class YoutubeCrawler : Crawler
     {
         private readonly YoutubeCrawlerConfig _config;
-        private ChromeDriver? _driver;
+        private IWebDriver? _driver;
 
         public YoutubeCrawler() : base("YoutubeCrawler", "")
         {
@@ -57,12 +57,14 @@ namespace Krauler.Crawlers
             if (_config.UseProxy)
             {
                 var rand = new Random();
-                var proxy = Proxy.Value[rand.Next(Proxy.Value.Count)];
+                var proxy = Proxies.Value[rand.Next(Proxies.Value.Count)];
                 options.AddArgument("--proxy-server=http://" + proxy);
             }
             if (_config.SetUserAgent)
             {
-                options.AddArgument("--user-agent=Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5355d Safari/8536.25");
+                var rand = new Random();
+                var userAgent = UserAgents.Value[rand.Next(UserAgents.Value.Count)];
+                options.AddArgument("--user-agent=" + userAgent);
             }
             _driver = new ChromeDriver(service, options);
             
@@ -91,20 +93,15 @@ namespace Krauler.Crawlers
             }
 
             // Confirm google usage
-            foreach (var handle in _driver.WindowHandles)
+            if (_driver.FindElementSafe(By.TagName("button")) != null)
             {
-                try
-                {
-                    _driver.SwitchTo().Window(handle);
-                    _driver.FindElementByTagName("button").Click();
-                    Logger.Instance.WriteLine($"Confirmed google usage {++j}");
-                }
-                catch (Exception ex)
-                {
-                    Logger.Instance.Write(ex);
-                }
+                GoogleUsageConfirmer(0, By.TagName("button"));
             }
-
+            if (_driver.FindElementSafe(By.ClassName("button")) != null)
+            {
+                GoogleUsageConfirmer(0, By.XPath("//form/input[@class='button']"));
+            }
+            
 
             var wait = new WebDriverWait(_driver, new TimeSpan(0, 0, 30));
 
@@ -117,9 +114,26 @@ namespace Krauler.Crawlers
                 {
                     _driver.SwitchTo().Window(handle);
                     //var quit = _chromeDriver.FindElementById("dismiss-button").Displayed;
-                    _driver.FindElementById("dismiss-button").Click();
+                    _driver.FindElement(By.Id("dismiss-button")).Click();
                     wait.Until(_ => ((IJavaScriptExecutor)_driver).ExecuteScript("return document.readyState").Equals("complete"));
-                    _driver.FindElementById("player-container").Click();
+                    _driver.FindElement(By.Id("player-container")).Click();
+                    Logger.Instance.WriteLine($"Confirmed google usage {++j}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Instance.Write(ex);
+                }
+            }
+        }
+
+        private void GoogleUsageConfirmer(uint j, By tagName)
+        {
+            foreach (var handle in _driver.WindowHandles)
+            {
+                try
+                {
+                    _driver.SwitchTo().Window(handle);
+                    _driver.FindElement(tagName).Click();
                     Logger.Instance.WriteLine($"Confirmed google usage {++j}");
                 }
                 catch (Exception ex)

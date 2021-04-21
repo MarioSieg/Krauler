@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using OpenQA.Selenium;
 
 namespace Krauler
 {
@@ -14,7 +15,8 @@ namespace Krauler
     {
         private string _childName;
         private object? _config;
-        public readonly Lazy<List<string>> Proxy = new(() => FileLoader(Config.ResourcesDir + "proxyList.txt"));
+        public readonly Lazy<List<string>> Proxies = new(() => FileLoader(Config.ResourcesDir + "proxyList.txt"));
+        public readonly Lazy<List<string>> UserAgents = new(() => FileLoader(Config.ResourcesDir + "userAgents.txt"));
 
         /// <summary>
         ///     Construct with constant data.
@@ -38,8 +40,6 @@ namespace Krauler
         /// </summary>
         public string Description { get; protected set; }
 
-        public List<string> ProxyInitialized => Proxy.Value;
-
         /// <summary>
         ///     Initialize config type and try to load the file.
         /// </summary>
@@ -53,7 +53,7 @@ namespace Krauler
             _config = cfg;
             return cfg;
         }
-
+        
         protected TConfig? GetConfig<TConfig>()
         {
             return (TConfig?) _config;

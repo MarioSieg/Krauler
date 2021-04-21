@@ -22,8 +22,8 @@ namespace Krauler
 
     public static class Config
     {
-        public static string ConfigDir = "Config/";
-        public static string ResourcesDir = "resources/";
+        public const string ConfigDir = "Config/";
+        public const string ResourcesDir = "resources/";
 
         static Config()
         {
