@@ -146,9 +146,11 @@ namespace Krauler
         {
             try
             {
-#pragma warning disable CS8603 // Possible null reference return.
-                return Config.Deserialize<T>(_childName);
-#pragma warning restore CS8603 // Possible null reference return.
+                var cfg = Config.Deserialize<T>(_childName);
+                if (cfg == null)
+                {
+                    throw new NullReferenceException();
+                }
             }
             catch
             {
