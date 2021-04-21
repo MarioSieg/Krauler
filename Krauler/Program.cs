@@ -12,6 +12,8 @@ namespace Krauler
             {
                 Logger.Instance.WriteLine("Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!");
                 Utility.SetCorrectWorkingDir();
+                Logger.Instance.WriteLine($"Loaded {Crawler.Proxies.Value.Length} proxies!");
+                Logger.Instance.WriteLine($"Loaded {Crawler.UserAgents.Value.Length} user agents!");
                 await Crawler.ConstructAndDispatchAsync<YoutubeCrawler>();
             }
             catch (Exception e)
