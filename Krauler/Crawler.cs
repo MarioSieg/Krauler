@@ -10,10 +10,17 @@ namespace Krauler
     /// </summary>
     public abstract class Crawler
     {
-        public readonly Lazy<string[]> Proxies = new(() => File.ReadAllLines(Config.ResourcesDir + "proxyList.txt"));
+        public static readonly Lazy<string[]> Proxies = new(() =>
+        {
+            var list = File.ReadAllLines(Config.ResourcesDir + "ProxyList.txt");
+            return list.Length != 0 ? list : throw new NullReferenceException();
+        });
 
-        public readonly Lazy<string[]>
-            UserAgents = new(() => File.ReadAllLines(Config.ResourcesDir + "userAgents.txt"));
+        public static readonly Lazy<string[]> UserAgents = new(() =>
+        {
+            var list = File.ReadAllLines(Config.ResourcesDir + "UserAgents.txt");
+            return list.Length != 0 ? list : throw new NullReferenceException();
+        });
 
         private string? _childName;
         private object? _config;

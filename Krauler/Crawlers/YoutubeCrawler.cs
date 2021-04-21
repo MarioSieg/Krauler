@@ -11,6 +11,7 @@ namespace Krauler.Crawlers
         public bool ChromeDriverHideCommandPromptWindow = true;
         
         public bool UseProxy = false;
+
         public readonly bool SetUserAgent = true;
         
         public readonly List<string> DefaultChromeOptions = new()
@@ -29,8 +30,8 @@ namespace Krauler.Crawlers
         };
 
         public PageLoadStrategy PageLoadStrategy = PageLoadStrategy.Normal;
+
         public byte TabCount = 3;
-        
 
         public YoutubeCrawlerConfig() : base("https://www.youtube.com/watch?v=6MvcwAvZ1nY") { }
     }

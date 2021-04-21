@@ -36,7 +36,7 @@ namespace Krauler
             };
         }
 
-        public static void Serialize<T>(T? data, string className)
+        public static void Serialize<T>(T? data, string? className)
         {
             string json = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText($"{ConfigDir}{className}.ini", json);
