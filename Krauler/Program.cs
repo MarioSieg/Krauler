@@ -9,14 +9,10 @@ namespace Krauler
     {
         private static async Task Main(string[] args)
         {
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            // ToDo: differentiate windwos/linux/mac
-            var curDir = Path.GetFullPath(Path.Combine(baseDirectory, @"../../../"));
             try
             {
-                Directory.SetCurrentDirectory(curDir);
                 Logger.Instance.WriteLine("Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!");
-
+                Utility.SetCorrectWorkingDir();
                 await Crawler.ConstructAndDispatchAsync<YoutubeCrawler>();
             }
             catch (Exception e)

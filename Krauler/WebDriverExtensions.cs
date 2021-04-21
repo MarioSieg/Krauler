@@ -2,10 +2,10 @@
 
 namespace Krauler
 {
-    public static class WebdriverExtensions
+    public static class WebDriverExtensions
     {
         /// <summary>
-        /// Same as FindElement only returns null when not found instead of an exception.
+        ///     Same as FindElement only returns null when not found instead of an exception.
         /// </summary>
         /// <param name="driver">current browser instance</param>
         /// <param name="by">The search string for finding element</param>

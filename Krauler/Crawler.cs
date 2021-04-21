@@ -15,8 +15,8 @@ namespace Krauler
     {
         private string _childName;
         private object? _config;
-        public readonly Lazy<List<string>> Proxies = new(() => FileLoader(Config.ResourcesDir + "proxyList.txt"));
-        public readonly Lazy<List<string>> UserAgents = new(() => FileLoader(Config.ResourcesDir + "userAgents.txt"));
+        public readonly Lazy<string[]> Proxies = new(() => File.ReadAllLines(Config.ResourcesDir + "proxyList.txt"));
+        public readonly Lazy<string[]> UserAgents = new(() => File.ReadAllLines(Config.ResourcesDir + "userAgents.txt"));
 
         /// <summary>
         ///     Construct with constant data.
@@ -159,23 +159,6 @@ namespace Krauler
                 SerializeConfig(cfg);
                 return cfg;
             }
-        }
-        
-        public static List<string> FileLoader(string filePath){
-            if (!File.Exists(filePath))
-                throw new FileNotFoundException($"Failed to find file \"{filePath}\"", filePath);
-            var list = new List<string>();
-            using var reader = new StreamReader(File.OpenRead(filePath));
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                if (line?.Length > 0)
-                    list.Add((string) line);
-            }
-            
-            if (list.Count == 0)
-                throw new FileLoadException($"File is empty:  \"{filePath}\"", filePath);
-            return list;
         }
     }
 }
