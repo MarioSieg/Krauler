@@ -147,10 +147,10 @@ namespace Krauler
             try
             {
                 var cfg = Config.Deserialize<T>(_childName);
-                if (cfg == null)
-                {
-                    throw new NullReferenceException();
-                }
+                if (cfg != null) return cfg;
+                cfg = new T();
+                SerializeConfig(cfg);
+                return cfg;
             }
             catch
             {
