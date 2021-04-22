@@ -67,28 +67,12 @@ namespace Krauler
         }
 
         /// <summary>
-        ///     Crawl one time.
-        /// </summary>
-        /// <typeparam name="T">The type to create.</typeparam>
-        /// <returns>The task.</returns>
-        public static Task ConstructAndDispatchAsync<T>() where T : Crawler, new()
-        {
-            return Task.Run(() =>
-            {
-                var crawler = new T();
-                crawler.OnInitialize();
-                crawler.OnDispatch();
-                crawler.OnDestroy();
-            });
-        }
-
-        /// <summary>
         ///     Dispatch multiple times.
         /// </summary>
         /// <typeparam name="T">The type to create.</typeparam>
         /// <param name="times">How often to call OnDispatch().</param>
         /// <returns>The task.</returns>
-        public static Task ConstructAndDispatchAsync<T>(ulong times) where T : Crawler, new()
+        public static Task ConstructAndDispatchAsync<T>(ulong times = 1) where T : Crawler, new()
         {
             return Task.Run(() =>
             {

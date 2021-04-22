@@ -31,7 +31,8 @@ namespace Krauler
             JsonConvert.DefaultSettings = () =>
             {
                 var settings = new JsonSerializerSettings();
-                settings.Converters.Add(new StringEnumConverter {CamelCaseText = true});
+                var item = new StringEnumConverter {CamelCaseText = true};
+                settings.Converters.Add(item);
                 return settings;
             };
         }
@@ -42,7 +43,7 @@ namespace Krauler
             File.WriteAllText($"{ConfigDir}{className}.ini", json);
         }
 
-        public static T? Deserialize<T>(string className)
+        public static T? Deserialize<T>(string? className)
         {
             string raw = File.ReadAllText($"{ConfigDir}{className}.ini");
             return JsonConvert.DeserializeObject<T?>(raw);
