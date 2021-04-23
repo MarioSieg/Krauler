@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools.V85.IndexedDB;
@@ -41,7 +42,7 @@ namespace Krauler.Crawlers
         public GoogleCrawlerConfig() : base("http://google.com") { }
     }
 
-    public class GoogleCrawler : Crawler
+    public class GoogleCrawler : Crawler<string>
     {
         private readonly GoogleCrawlerConfig _config;
         private IWebDriver? _driver;
@@ -62,13 +63,13 @@ namespace Krauler.Crawlers
             if (_config.UseProxy)
             {
                 var rand = new Random();
-                var proxy = Proxies.Value[rand.Next(Proxies.Value.Length)];
+                var proxy = CrawlerFactory.Proxies.Value[rand.Next(CrawlerFactory.Proxies.Value.Length)];
                 options.AddArgument("--proxy-server=http://" + proxy);
             }
             if (_config.SetUserAgent)
             {
                 var rand = new Random();
-                var userAgent = UserAgents.Value[rand.Next(UserAgents.Value.Length)];
+                var userAgent = CrawlerFactory.UserAgents.Value[rand.Next(CrawlerFactory.UserAgents.Value.Length)];
                 options.AddArgument("--user-agent=" + userAgent);
             }
             _driver = new ChromeDriver(service, options);
@@ -124,11 +125,21 @@ namespace Krauler.Crawlers
                 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
                 resultList2.AddRange(searchResults.Where(x =>  x.Text.Contains("http")).Select(x => linkParser.Match(x.Text)));
-                
+                SubmitData(resultList2.Select(x => x.Value));
                 Console.WriteLine(string.Join("\r\n",resultList2.Select(x => x.Value)));
             }
             
         }
+
+        protected override IEnumerable<string> DataProcessor(IEnumerable<string> x)
+        {
+            foreach (var y in x)
+            {
+                yield return y.Trim().Trim('\n').Trim('\t').Trim('\r');
+            }
+            DumpResults();
+        }
+
         private void GoogleUsageConfirmer(By tagName)
         {
             uint i = 0;

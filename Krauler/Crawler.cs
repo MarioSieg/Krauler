@@ -1,6 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Threading;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Krauler
@@ -8,19 +7,9 @@ namespace Krauler
     /// <summary>
     ///     Base class for all crawlers.
     /// </summary>
-    public abstract class Crawler
+    public abstract class Crawler<TData> where TData : class
     {
-        public static readonly Lazy<string[]> Proxies = new(() =>
-        {
-            var list = File.ReadAllLines(Config.ResourcesDir + "ProxyList.txt");
-            return list.Length != 0 ? list : throw new NullReferenceException();
-        });
-
-        public static readonly Lazy<string[]> UserAgents = new(() =>
-        {
-            var list = File.ReadAllLines(Config.ResourcesDir + "UserAgents.txt");
-            return list.Length != 0 ? list : throw new NullReferenceException();
-        });
+        public delegate IEnumerable<TData>? Refiner(IEnumerable<TData> x);
 
         private string? _childName;
         private object? _config;
@@ -35,7 +24,10 @@ namespace Krauler
         {
             Name = name;
             Description = description;
+            ;
         }
+
+        public List<TData> Results { get; } = new(128);
 
         /// <summary>
         ///     Name of the crawler.
@@ -47,16 +39,57 @@ namespace Krauler
         /// </summary>
         public string Description { get; protected set; }
 
+        public void DumpResults()
+        {
+            lock (Results)
+            {
+                foreach (var x in Results)
+                    Logger.Instance.WriteLine(x.ToString() ?? "NONE");
+            }
+        }
+
+        /// <summary>
+        ///     Submit data for processing.
+        /// </summary>
+        /// <param name="task"></param>
+        /// <param name="x"></param>
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+        protected async void SubmitData(Refiner task, IEnumerable<TData> x)
+        {
+            await Task.Run(() =>
+            {
+                var result = task(x);
+                lock (Results)
+                {
+                    if (result != null)
+                        foreach (var y in result)
+                            Results.Add(y);
+                }
+            });
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void SubmitData(IEnumerable<TData> x)
+        {
+            SubmitData(DataProcessor, x);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected virtual IEnumerable<TData>? DataProcessor(IEnumerable<TData> x)
+        {
+            return null;
+        }
+
         /// <summary>
         ///     Initialize config type and try to load the file.
         /// </summary>
         /// <typeparam name="TSelf"></typeparam>
         /// <typeparam name="TConfig"></typeparam>
         /// <returns></returns>
-        protected TConfig InitializeConfig<TSelf, TConfig>() where TConfig : BaseConfig, new()
+        protected TConfig InitializeConfig<TSelf, TConfig>(TConfig? manual = null) where TConfig : BaseConfig, new()
         {
             _childName = typeof(TSelf).Name;
-            var cfg = DeserializeConfig<TConfig>();
+            var cfg = manual ?? DeserializeConfig<TConfig>();
             _config = cfg;
             return cfg;
         }
@@ -67,46 +100,6 @@ namespace Krauler
         }
 
         /// <summary>
-        ///     Dispatch multiple times.
-        /// </summary>
-        /// <typeparam name="T">The type to create.</typeparam>
-        /// <param name="times">How often to call OnDispatch().</param>
-        /// <returns>The task.</returns>
-        public static Task ConstructAndDispatchAsync<T>(ulong times = 1) where T : Crawler, new()
-        {
-            return Task.Run(() =>
-            {
-                var crawler = new T();
-                crawler.OnInitialize();
-                for (ulong i = 0; i < times; ++i) crawler.OnDispatch();
-                crawler.OnDestroy();
-            });
-        }
-
-        /// <summary>
-        ///     Dispatch multiple times.
-        /// </summary>
-        /// <typeparam name="T">The type to create.</typeparam>
-        /// <param name="times">How often to call OnDispatch().</param>
-        /// <param name="timeout">Timeout to sleep between each call.</param>
-        /// <returns>The task.</returns>
-        public static Task ConstructAndDispatchAsync<T>(ulong times, TimeSpan timeout) where T : Crawler, new()
-        {
-            return Task.Run(() =>
-            {
-                var crawler = new T();
-                crawler.OnInitialize();
-                for (ulong i = 0; i < times; ++i)
-                {
-                    crawler.OnDispatch();
-                    Thread.Sleep(timeout);
-                }
-
-                crawler.OnDestroy();
-            });
-        }
-
-        /// <summary>
         ///     Called when the crawler is created.
         /// </summary>
         public abstract void OnInitialize();
@@ -114,6 +107,7 @@ namespace Krauler
         /// <summary>
         ///     Called when the crawler should start crawling :D
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public virtual void OnDispatch() { }
 
         /// <summary>
