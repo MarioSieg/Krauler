@@ -36,7 +36,7 @@ namespace Krauler.Crawlers
         public YoutubeCrawlerConfig() : base("https://www.youtube.com/watch?v=6MvcwAvZ1nY") { }
     }
 
-    public class YoutubeCrawler : Crawler
+    public class YoutubeCrawler : Crawler<object>
     {
         private readonly YoutubeCrawlerConfig _config;
         private IWebDriver? _driver;
@@ -57,13 +57,13 @@ namespace Krauler.Crawlers
             if (_config.UseProxy)
             {
                 var rand = new Random();
-                var proxy = Proxies.Value[rand.Next(Proxies.Value.Length)];
+                var proxy = CrawlerFactory.Proxies.Value[rand.Next(CrawlerFactory.Proxies.Value.Length)];
                 options.AddArgument("--proxy-server=http://" + proxy);
             }
             if (_config.SetUserAgent)
             {
                 var rand = new Random();
-                var userAgent = UserAgents.Value[rand.Next(UserAgents.Value.Length)];
+                var userAgent = CrawlerFactory.UserAgents.Value[rand.Next(CrawlerFactory.UserAgents.Value.Length)];
                 options.AddArgument("--user-agent=" + userAgent);
             }
             _driver = new ChromeDriver(service, options);
