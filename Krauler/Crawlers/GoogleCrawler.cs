@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools.V85.IndexedDB;
@@ -100,13 +101,25 @@ namespace Krauler.Crawlers
                 IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
                 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
-                foreach (IWebElement result in searchResults)
+                List<string> data = new(searchResults.Count);
+                foreach (var x in searchResults)
                 {
-                    Console.WriteLine(result.Text.Replace("\r\n","").Trim());
+                    data.Add(x.Text);
                 }
+                SubmitData(data);
             }
             
         }
+
+        protected override IEnumerable<string> DataProcessor(IEnumerable<string> x)
+        {
+            foreach (var y in x)
+            {
+                yield return y.Trim().Trim('\n').Trim('\t').Trim('\r');
+            }
+            DumpResults();
+        }
+
         private void GoogleUsageConfirmer(By tagName)
         {
             uint i = 0;

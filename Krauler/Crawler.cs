@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Krauler
 {
+    public delegate IEnumerable<string>? Refiner(IEnumerable<string> x);
+
     /// <summary>
     ///     Base class for all crawlers.
     /// </summary>
@@ -22,8 +26,47 @@ namespace Krauler
             return list.Length != 0 ? list : throw new NullReferenceException();
         });
 
+        public List<string> Results { get; } = new(128);
+
         private string? _childName;
         private object? _config;
+
+        public void DumpResults()
+        {
+            lock (Results)
+                foreach (var x in Results)
+                    Logger.Instance.WriteLine(x);
+        }
+
+        /// <summary>
+        /// Submit data for processing.
+        /// </summary>
+        /// <param name="task"></param>
+        /// <param name="x"></param>
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+        protected async void SubmitData(Refiner task, IEnumerable<string> x)
+        {
+            await Task.Run(() =>
+            {
+                IEnumerable<string>? result = task(x);
+                lock (Results)
+                    if(result != null)
+                        foreach (var y in result)
+                            Results.Add(y);
+            });
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void SubmitData(IEnumerable<string> x)
+        {
+            SubmitData(DataProcessor, x);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected virtual IEnumerable<string>? DataProcessor(IEnumerable<string> x)
+        {
+            return null;
+        }
 
         /// <summary>
         ///     Construct with constant data.
@@ -34,7 +77,7 @@ namespace Krauler
         protected Crawler(string name, string description)
         {
             Name = name;
-            Description = description;
+            Description = description; ;
         }
 
         /// <summary>
@@ -114,6 +157,7 @@ namespace Krauler
         /// <summary>
         ///     Called when the crawler should start crawling :D
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public virtual void OnDispatch() { }
 
         /// <summary>
