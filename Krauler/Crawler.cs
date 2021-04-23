@@ -9,8 +9,6 @@ namespace Krauler
     /// </summary>
     public abstract class Crawler<TData> where TData : class
     {
-        protected delegate IEnumerable<TData>? Refiner(IEnumerable<TData> x);
-
         private string? _childName;
         private object? _config;
 
@@ -144,5 +142,7 @@ namespace Krauler
                 return cfg;
             }
         }
+
+        protected delegate IEnumerable<TData>? Refiner(IEnumerable<TData> x);
     }
 }
