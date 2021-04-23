@@ -53,10 +53,10 @@ namespace Krauler
         /// <typeparam name="TSelf"></typeparam>
         /// <typeparam name="TConfig"></typeparam>
         /// <returns></returns>
-        protected TConfig InitializeConfig<TSelf, TConfig>() where TConfig : BaseConfig, new()
+        protected TConfig InitializeConfig<TSelf, TConfig>(TConfig? manual = null) where TConfig : BaseConfig, new()
         {
             _childName = typeof(TSelf).Name;
-            var cfg = DeserializeConfig<TConfig>();
+            var cfg = manual ?? DeserializeConfig<TConfig>();
             _config = cfg;
             return cfg;
         }
