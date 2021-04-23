@@ -9,7 +9,7 @@ namespace Krauler
     /// </summary>
     public abstract class Crawler<TData> where TData : class
     {
-        public delegate IEnumerable<TData>? Refiner(IEnumerable<TData> x);
+        protected delegate IEnumerable<TData>? Refiner(IEnumerable<TData> x);
 
         private string? _childName;
         private object? _config;
@@ -24,7 +24,6 @@ namespace Krauler
         {
             Name = name;
             Description = description;
-            ;
         }
 
         public List<TData> Results { get; } = new(128);
@@ -75,7 +74,7 @@ namespace Krauler
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual IEnumerable<TData>? DataProcessor(IEnumerable<TData> x)
+        protected virtual IEnumerable<TData>? DataProcessor(IEnumerable<TData> rawText)
         {
             return null;
         }

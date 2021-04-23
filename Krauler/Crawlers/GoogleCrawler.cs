@@ -96,7 +96,7 @@ namespace Krauler.Crawlers
             
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
             const string? query = "KevinKlang";
-            var linkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            
 
             var confirm = true; // Google confirm usage needs to be done only at first call
             var resultList2 = new List<Match>();
@@ -124,18 +124,19 @@ namespace Krauler.Crawlers
                 IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
                 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
-                resultList2.AddRange(searchResults.Where(x =>  x.Text.Contains("http")).Select(x => linkParser.Match(x.Text)));
-                SubmitData(resultList2.Select(x => x.Value));
-                Console.WriteLine(string.Join("\r\n",resultList2.Select(x => x.Value)));
+                SubmitData(searchResults.Select(x => x.Text));
             }
             
         }
-
-        protected override IEnumerable<string> DataProcessor(IEnumerable<string> x)
+        
+        private Regex linkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        
+        protected override IEnumerable<string> DataProcessor(IEnumerable<string> rawText)
         {
-            foreach (var y in x)
+            foreach (var text in rawText)
             {
-                yield return y.Trim().Trim('\n').Trim('\t').Trim('\r');
+                if (text.Contains("http"))
+                    yield return linkParser.Match(text).Value;
             }
             DumpResults();
         }
