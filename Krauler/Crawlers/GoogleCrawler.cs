@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools.V85.IndexedDB;
@@ -77,22 +79,43 @@ namespace Krauler.Crawlers
 
         public override void OnDispatch()
         {
+            // Google Search URL params 
+            // gws =google web server
+            // rd = redirected
+            // cr = country reffered
+            // ei = timestamp. https://deedpolloffice.com/blog/articles/decoding-ei-parameter
+            // gs_lcp = Not sure, but it's Protobuf encoded. Edit: Someone said in replies this is likely to encode to a physical location, which also seems likely.
+            // sclient = Where you came from (so if you used images.google.com it would be img)
+            // bih = Browser height (pixels)
+            // q = The query it's actually searching for. Usually the same as oq unless you clicked on a suggested search term, then oq would be the text you typed and q is what you clicked on (what's actually being searched for)
+            // tbm=isch tells it you want to search Google Images. It stands for to be matched = image search.
+            // ved decodes to tell Google what links you clicked on previous pages on Google to get to the current page (https://valentin.app/ved.html)
+            // oq = The original query you wanted to search for that you typed in (see q)
+            
+            
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
+            const string? query = "KevinKlang";
+            var linkParser = new Regex(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-            for (uint i = 1; i < 5; ++i)
+            var confirm = true; // Google confirm usage needs to be done only at first call
+            var resultList2 = new List<Match>();
+            
+            for (uint i = 1; i < 8; ++i)
             {
-                _driver.Navigate().GoToUrl($"http://google.com/search?q=KevinKlang&start={(i - 1)*10}");
-
-                if (_driver.FindElementSafe(By.TagName("button")) != null)
+                _driver.Navigate().GoToUrl($"{_config.ServerHeader.Uri}/search?q={query}&start={(i-1)*10}");
+                
+                if (i > 1) confirm = false;
+                
+                if (_driver.FindElementSafe(By.TagName("button")) != null && confirm)
                 {
                     GoogleUsageConfirmer(By.TagName("button"));
                 }
-                if (_driver.FindElementSafe(By.Id("zV9nZe")) != null)
+                if (_driver.FindElementSafe(By.Id("zV9nZe")) != null && confirm)
                 {
                     GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
                 }
             
-                IWebElement element = _driver.FindElement(By.XPath("//input[@name='q']"));
+                //IWebElement element = _driver.FindElement(By.XPath("//input[@name='q']"));
             
                 //element.SendKeys("Kevin Klang");
                 //element.SendKeys(Keys.Enter);
@@ -100,10 +123,9 @@ namespace Krauler.Crawlers
                 IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
                 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
-                foreach (IWebElement result in searchResults)
-                {
-                    Console.WriteLine(result.Text.Replace("\r\n","").Trim());
-                }
+                resultList2.AddRange(searchResults.Where(x =>  x.Text.Contains("http")).Select(x => linkParser.Match(x.Text)));
+                
+                Console.WriteLine(string.Join("\r\n",resultList2.Select(x => x.Value)));
             }
             
         }
@@ -118,7 +140,7 @@ namespace Krauler.Crawlers
                 {
                     _driver.SwitchTo().Window(handle);
                     _driver.FindElement(tagName).Click();
-                    Logger.Instance.WriteLine($"Confirmed google usage {++i}");
+                    Logger.Instance.WriteLine($"Confirmed google usage {++i} by {tagName}");
                 }
                 catch (Exception ex)
                 {
