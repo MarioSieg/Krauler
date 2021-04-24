@@ -1,10 +1,17 @@
 ﻿using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Krauler
 {
     internal static class Utility
     {
-        public const byte CheckStages = 10;
+        private const byte CheckStages = 10;
+        
+        /// <summary>
+        /// Regex to extract urls
+        /// </summary>
+        public static readonly Regex LinkParser =
+            new(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static void SetCorrectWorkingDir()
         {

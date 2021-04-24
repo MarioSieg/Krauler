@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using static Krauler.Utility;
 
 namespace Krauler.Crawlers
 {
@@ -31,10 +32,10 @@ namespace Krauler.Crawlers
 
         public PageLoadStrategy PageLoadStrategy = PageLoadStrategy.Normal;
 
-        public nuint TabCount = 2;
+        public byte TabCount = 2;
 
         // -1 = loop forever
-        public nint RetryCount = -1;
+        public sbyte RetryCount = -1;
 
         public bool UseProxy = false;
 
@@ -45,9 +46,6 @@ namespace Krauler.Crawlers
     {
         private readonly GoogleCrawlerConfig _config;
         private IWebDriver? _driver;
-
-        private readonly Regex linkParser =
-            new(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public GoogleCrawler() : base("GoogleCrawler", "")
         {
@@ -62,6 +60,7 @@ namespace Krauler.Crawlers
             var options = new ChromeOptions {PageLoadStrategy = _config.PageLoadStrategy};
             options.AddArguments(_config.DefaultChromeOptions);
 
+            // choose a random proxy from file list
             if (_config.UseProxy)
             {
                 var rand = new Random();
@@ -69,6 +68,7 @@ namespace Krauler.Crawlers
                 options.AddArgument("--proxy-server=http://" + proxy);
             }
 
+            // choose a random proxy from file list
             if (_config.SetUserAgent)
             {
                 var rand = new Random();
@@ -97,30 +97,23 @@ namespace Krauler.Crawlers
             // ved decodes to tell Google what links you clicked on previous pages on Google to get to the current page (https://valentin.app/ved.html)
             // oq = The original query you wanted to search for that you typed in (see q)
 
-
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
             const string? query = "KevinKlang";
+            const ushort maxSearchPages = 5;
 
-
-            var confirm = true; // Google confirm usage needs to be done only at first call
-            var resultList2 = new List<Match>();
-
-            for (uint i = 1; i < 8; ++i)
+            for (uint i = 1; i < maxSearchPages; ++i)
             {
                 _driver.Navigate().GoToUrl($"{_config.ServerHeader.Uri}/search?q={query}&start={(i - 1) * 10}");
-
-                if (i > 1) confirm = false;
-
-                if (_driver.FindElementSafe(By.TagName("button")) != null && confirm)
-                    GoogleUsageConfirmer(By.TagName("button"));
-                if (_driver.FindElementSafe(By.Id("zV9nZe")) != null && confirm)
-                    GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
-
-                //IWebElement element = _driver.FindElement(By.XPath("//input[@name='q']"));
-
-                //element.SendKeys("Kevin Klang");
-                //element.SendKeys(Keys.Enter);
-
+                
+                if (i == 1) // google confirm only at first call 
+                {
+                    if (_driver.FindElementSafe(By.TagName("button")) != null)
+                        GoogleUsageConfirmer(By.TagName("button"));
+                    
+                    if (_driver.FindElementSafe(By.Id("zV9nZe")) != null)
+                        GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
+                }
+                
                 IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
@@ -132,7 +125,7 @@ namespace Krauler.Crawlers
         {
             foreach (var text in rawText)
                 if (text.Contains("http"))
-                    yield return linkParser.Match(text).Value;
+                    yield return LinkParser.Match(text).Value;
             DumpResults();
         }
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Krauler
 {
     /// <summary>
-    ///     Base class for all crawlers.
+    ///     Base class for all crawlers. 
     /// </summary>
     public abstract class Crawler<TData> where TData : class
     {
