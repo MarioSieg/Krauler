@@ -35,7 +35,17 @@ namespace Krauler.Crawlers
         public YoutubeCrawlerConfig() : base("https://www.youtube.com/watch?v=6MvcwAvZ1nY") { }
     }
 
-    public class YoutubeCrawler : Crawler<object>
+    public struct YoutubeCrawlerRawData
+    {
+
+    }
+
+    public struct YoutubeCrawlerResult
+    {
+
+    }
+
+    public class YoutubeCrawler : Crawler<YoutubeCrawlerRawData, YoutubeCrawlerResult>
     {
         private readonly YoutubeCrawlerConfig _config;
         private IWebDriver? _driver;

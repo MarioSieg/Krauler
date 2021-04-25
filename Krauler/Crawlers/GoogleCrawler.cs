@@ -41,7 +41,23 @@ namespace Krauler.Crawlers
         public GoogleCrawlerConfig() : base("http://google.com") { }
     }
 
-    public class GoogleCrawler : Crawler<string>
+    public struct GoogleCrawlerRawData
+    {
+        public string Text;
+    }
+
+    public struct GoogleCrawlerResult
+    {
+        public string Url;
+        public string Description;
+
+        public override string ToString()
+        {
+            return Url;
+        }
+    }
+
+    public sealed class GoogleCrawler : Crawler<GoogleCrawlerRawData, GoogleCrawlerResult>
     {
         private readonly GoogleCrawlerConfig _config;
         private IWebDriver? _driver;
@@ -118,15 +134,27 @@ namespace Krauler.Crawlers
                 IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
-                SubmitData(searchResults.Select(x => x.GetAttribute("href")));
+                SubmitData(searchResults.Select(x => new GoogleCrawlerRawData
+                {
+                    Text = x.GetAttribute("href")
+                }));
             }
         }
 
-        protected override IEnumerable<string> DataProcessor(IEnumerable<string>? rawText)
+        protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
-            foreach (var text in rawText!)
-                if (text.Contains("http"))
-                    yield return LinkParser.Match(text).Value;
+            foreach (var raw in rawData!)
+            {
+                if (raw.Text.Contains("http"))
+                {
+                    yield return new GoogleCrawlerResult
+                    {
+                        Url = LinkParser.Match(raw.Text).Value,
+                        Description = string.Empty
+                    };
+                }
+            }
+
             DumpResults();
         }
 
@@ -136,6 +164,7 @@ namespace Krauler.Crawlers
             if (_driver?.WindowHandles == null)
                 throw new NullReferenceException();
             foreach (var handle in _driver.WindowHandles)
+            {
                 try
                 {
                     _driver.SwitchTo().Window(handle);
@@ -146,6 +175,7 @@ namespace Krauler.Crawlers
                 {
                     Logger.Instance.Write(ex);
                 }
+            }
         }
 
         public override void OnDestroy()

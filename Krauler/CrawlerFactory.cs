@@ -22,16 +22,15 @@ namespace Krauler
         /// <summary>
         ///     Dispatch multiple times.
         /// </summary>
-        /// <typeparam name="T">The type to create.</typeparam>
-        /// <typeparam name="TCDat"></typeparam>
+        /// <typeparam name="TCrawler">The type to create.</typeparam>
         /// <param name="times">How often to call OnDispatch().</param>
         /// <returns>The task.</returns>
-        public static Task ConstructAndDispatchAsync<T, TCDat>(ulong times = 1)
-            where T : Crawler<TCDat>, new() where TCDat : class
+        public static Task ConstructAndDispatchAsync<TCrawler>(ulong times = 1)
+            where TCrawler : ICrawler, new()
         {
             return Task.Run(() =>
             {
-                var crawler = new T();
+                var crawler = new TCrawler();
                 crawler.OnInitialize();
                 for (ulong i = 0; i < times; ++i) crawler.OnDispatch();
                 crawler.OnDestroy();
@@ -41,17 +40,16 @@ namespace Krauler
         /// <summary>
         ///     Dispatch multiple times.
         /// </summary>
-        /// <typeparam name="T">The type to create.</typeparam>
-        /// <typeparam name="TCDat"></typeparam>
+        /// <typeparam name="TCrawler">The type to create.</typeparam>
         /// <param name="times">How often to call OnDispatch().</param>
         /// <param name="timeout">Timeout to sleep between each call.</param>
         /// <returns>The task.</returns>
-        public static Task ConstructAndDispatchAsync<T, TCDat>(ulong times, TimeSpan timeout)
-            where T : Crawler<TCDat>, new() where TCDat : class
+        public static Task ConstructAndDispatchAsync<TCrawler>(ulong times, TimeSpan timeout)
+            where TCrawler : ICrawler, new()
         {
             return Task.Run(() =>
             {
-                var crawler = new T();
+                var crawler = new TCrawler();
                 crawler.OnInitialize();
                 for (ulong i = 0; i < times; ++i)
                 {

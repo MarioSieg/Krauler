@@ -14,7 +14,7 @@ namespace Krauler
                 Utility.SetCorrectWorkingDir();
                 Logger.Instance.WriteLine($"Loaded {CrawlerFactory.Proxies.Value.Length} proxies!");
                 Logger.Instance.WriteLine($"Loaded {CrawlerFactory.UserAgents.Value.Length} user agents!");
-                await CrawlerFactory.ConstructAndDispatchAsync<GoogleCrawler, string>();
+                await CrawlerFactory.ConstructAndDispatchAsync<GoogleCrawler>();
             }
             catch (Exception e)
             {

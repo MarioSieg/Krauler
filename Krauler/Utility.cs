@@ -6,9 +6,9 @@ namespace Krauler
     internal static class Utility
     {
         private const byte CheckStages = 10;
-        
+
         /// <summary>
-        /// Regex to extract urls
+        ///     Regex to extract urls
         /// </summary>
         public static readonly Regex LinkParser =
             new(@"\b(?:https?://|www\.)\S+\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);

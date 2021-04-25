@@ -11,7 +11,7 @@ namespace Krauler
     /// <summary>
     ///     Base class for all crawlers.
     /// </summary>
-    public abstract class Crawler<TData> where TData : class
+    public abstract class Crawler<TRawData, TResult> : ICrawler where TRawData : struct where TResult : struct
     {
         private string? _childName;
         private object? _config;
@@ -28,7 +28,7 @@ namespace Krauler
             Description = description;
         }
 
-        public List<TData> Results { get; } = new(128);
+        public List<TResult> Results { get; } = new(128);
 
         /// <summary>
         ///     Name of the crawler.
@@ -39,6 +39,12 @@ namespace Krauler
         ///     Short description on what it crawls.
         /// </summary>
         public string Description { get; protected set; }
+
+        public abstract void OnInitialize();
+
+        public abstract void OnDispatch();
+
+        public abstract void OnDestroy();
 
         public void DumpResults()
         {
@@ -55,7 +61,7 @@ namespace Krauler
         /// <param name="task"></param>
         /// <param name="x"></param>
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        protected async void SubmitData(Refiner task, IEnumerable<TData>? x)
+        protected async void SubmitData(Refiner task, IEnumerable<TRawData>? x)
         {
             try
             {
@@ -78,7 +84,7 @@ namespace Krauler
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void SubmitData(IEnumerable<TData>? inputDataList, bool createClonedData = true)
+        protected void SubmitData(IEnumerable<TRawData>? inputDataList, bool createClonedData = true)
         {
             if (inputDataList == null || !inputDataList.Any())
             {
@@ -86,12 +92,12 @@ namespace Krauler
                 return;
             }
 
-            IEnumerable<TData>? clonedDataList = createClonedData ? inputDataList.ToHashSet() : null;
+            IEnumerable<TRawData>? clonedDataList = createClonedData ? inputDataList.ToHashSet() : null;
             SubmitData(DataProcessor, createClonedData ? clonedDataList : inputDataList);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual IEnumerable<TData>? DataProcessor(IEnumerable<TData>? rawText)
+        protected virtual IEnumerable<TResult>? DataProcessor(IEnumerable<TRawData>? rawData)
         {
             return null;
         }
@@ -114,22 +120,6 @@ namespace Krauler
         {
             return (TConfig?) _config;
         }
-
-        /// <summary>
-        ///     Called when the crawler is created.
-        /// </summary>
-        public abstract void OnInitialize();
-
-        /// <summary>
-        ///     Called when the crawler should start crawling :D
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        public virtual void OnDispatch() { }
-
-        /// <summary>
-        ///     Called when the crawler is destroyed.
-        /// </summary>
-        public abstract void OnDestroy();
 
         public void SerializeConfig<T>(in T? data)
         {
@@ -162,6 +152,6 @@ namespace Krauler
             }
         }
 
-        protected delegate IEnumerable<TData>? Refiner(IEnumerable<TData>? x);
+        protected delegate IEnumerable<TResult>? Refiner(IEnumerable<TRawData>? x);
     }
 }
