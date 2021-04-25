@@ -103,14 +103,16 @@ namespace Krauler.Crawlers
 
             for (uint i = 1; i < maxSearchPages; ++i)
             {
-                _driver.Navigate().GoToUrl($"{_config.ServerHeader.Uri}/search?q={query}&start={(i - 1) * 10}");
+                var url = $"{_config.ServerHeader.Uri}/search?q={query}&start={(i - 1) * 10}";
+                    Logger.Instance.WriteLine($"GoTo Url: {url}");
+                _driver.Navigate().GoToUrl(url);
                 
                 if (i == 1) // google confirm only at first call 
                 {
                     if (_driver.FindElementSafe(By.TagName("button")) != null)
                         GoogleUsageConfirmer(By.TagName("button"));
                     
-                    if (_driver.FindElementSafe(By.Id("zV9nZe")) != null)
+                    if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
                         GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
                 }
                 
