@@ -118,7 +118,7 @@ namespace Krauler.Crawlers
                 IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
-                SubmitData(searchResults.Select(x => x.Text));
+                SubmitData(searchResults.Select(x => x.GetAttribute("href")));
             }
         }
 

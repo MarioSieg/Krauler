@@ -1,71 +1,171 @@
-[4/25/2021 2:59:24 PM Info]: Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!
-[4/25/2021 2:59:24 PM Info]: Current working directory: C:\Mario\Projects\Krauler\Krauler
-[4/25/2021 2:59:24 PM Info]: Loaded 2482 proxies!
-[4/25/2021 2:59:24 PM Info]: Loaded 10563 user agents!
-[4/25/2021 2:59:25 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=0
-[4/25/2021 2:59:25 PM Info]: Confirmed google usage 1 by By.TagName: button
-[4/25/2021 2:59:25 PM Info]: Confirmed google usage 1 by By.XPath: //button[@id='zV9nZe']
-[4/25/2021 2:59:26 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=10
-[4/25/2021 2:59:26 PM Info]: http://www.kevinklang.de
-[4/25/2021 2:59:26 PM Info]: https://de-de.facebook.com
-[4/25/2021 2:59:26 PM Info]: https://m.facebook.com
-[4/25/2021 2:59:26 PM Info]: https://soundcloud.com
-[4/25/2021 2:59:26 PM Info]: https://www.sofaconcerts.org
-[4/25/2021 2:59:26 PM Info]: https://www.myownmusic.de
-[4/25/2021 2:59:26 PM Info]: https://www.backstagepro.de
-[4/25/2021 2:59:26 PM Info]: https://atseacompilations.bandcamp.com
-[4/25/2021 2:59:26 PM Info]: https://www.amazon.de
-[4/25/2021 2:59:26 PM Info]: https://music.apple.com
-[4/25/2021 2:59:27 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=20
-[4/25/2021 2:59:27 PM Info]: http://www.kevinklang.de
-[4/25/2021 2:59:27 PM Info]: https://de-de.facebook.com
-[4/25/2021 2:59:27 PM Info]: https://m.facebook.com
-[4/25/2021 2:59:27 PM Info]: https://soundcloud.com
-[4/25/2021 2:59:27 PM Info]: https://www.sofaconcerts.org
-[4/25/2021 2:59:27 PM Info]: https://www.myownmusic.de
-[4/25/2021 2:59:27 PM Info]: https://www.backstagepro.de
-[4/25/2021 2:59:27 PM Info]: https://atseacompilations.bandcamp.com
-[4/25/2021 2:59:27 PM Info]: https://www.amazon.de
-[4/25/2021 2:59:27 PM Info]: https://music.apple.com
-[4/25/2021 2:59:27 PM Info]: https://bardentreffen.nuernberg.de
-[4/25/2021 2:59:27 PM Info]: https://www.swp.de
-[4/25/2021 2:59:27 PM Info]: https://www.youtube.com
-[4/25/2021 2:59:27 PM Info]: https://music.apple.com
-[4/25/2021 2:59:27 PM Info]: https://www.instagram.com
-[4/25/2021 2:59:27 PM Info]: https://filstalexpress.de
-[4/25/2021 2:59:27 PM Info]: https://www.lisaschwegler.de
-[4/25/2021 2:59:27 PM Info]: https://twitter.com
-[4/25/2021 2:59:27 PM Info]: https://open.spotify.com
-[4/25/2021 2:59:27 PM Info]: https://mx3.ch
-[4/25/2021 2:59:28 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=30
-[4/25/2021 2:59:28 PM Info]: http://www.kevinklang.de
-[4/25/2021 2:59:28 PM Info]: https://de-de.facebook.com
-[4/25/2021 2:59:28 PM Info]: https://m.facebook.com
-[4/25/2021 2:59:28 PM Info]: https://soundcloud.com
-[4/25/2021 2:59:28 PM Info]: https://www.sofaconcerts.org
-[4/25/2021 2:59:28 PM Info]: https://www.myownmusic.de
-[4/25/2021 2:59:28 PM Info]: https://www.backstagepro.de
-[4/25/2021 2:59:28 PM Info]: https://atseacompilations.bandcamp.com
-[4/25/2021 2:59:28 PM Info]: https://www.amazon.de
-[4/25/2021 2:59:28 PM Info]: https://music.apple.com
-[4/25/2021 2:59:28 PM Info]: https://bardentreffen.nuernberg.de
-[4/25/2021 2:59:28 PM Info]: https://www.swp.de
-[4/25/2021 2:59:28 PM Info]: https://www.youtube.com
-[4/25/2021 2:59:28 PM Info]: https://music.apple.com
-[4/25/2021 2:59:28 PM Info]: https://www.instagram.com
-[4/25/2021 2:59:28 PM Info]: https://filstalexpress.de
-[4/25/2021 2:59:28 PM Info]: https://www.lisaschwegler.de
-[4/25/2021 2:59:28 PM Info]: https://twitter.com
-[4/25/2021 2:59:28 PM Info]: https://open.spotify.com
-[4/25/2021 2:59:28 PM Info]: https://mx3.ch
-[4/25/2021 2:59:28 PM Info]: https://jwsoundgroup.net
-[4/25/2021 2:59:28 PM Info]: http://www.chartsinfrance.net
-[4/25/2021 2:59:28 PM Info]: https://www.badische-zeitung.de
-[4/25/2021 2:59:28 PM Info]: https://www.musixmatch.com
-[4/25/2021 2:59:28 PM Info]: https://www.linkedin.com
-[4/25/2021 2:59:28 PM Info]: https://www.amazon.com
-[4/25/2021 2:59:28 PM Info]: https://stauferkrone.de
-[4/25/2021 2:59:28 PM Info]: https://www.startnext.com
-[4/25/2021 2:59:28 PM Info]: https://www.bochumtotal.de
-[4/25/2021 2:59:28 PM Info]: https://komponistenverband.de
-[4/25/2021 2:59:29 PM Info]: http://www.kevinklang.de
+[2021-04-25 15:28:23 Info]: Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!
+[2021-04-25 15:28:23 Info]: Current working directory: C:\git\krauler\Krauler
+[2021-04-25 15:28:23 Info]: Loaded 2482 proxies!
+[2021-04-25 15:28:23 Info]: Loaded 10563 user agents!
+[2021-04-25 15:28:25 Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=0
+[2021-04-25 15:28:26 Info]: Confirmed google usage 1 by By.TagName: button
+[2021-04-25 15:28:26 Info]: Confirmed google usage 1 by By.XPath: //button[@id='zV9nZe']
+[2021-04-25 15:28:27 Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=10
+[2021-04-25 15:28:27 Info]: http://www.kevinklang.de
+[2021-04-25 15:28:27 Info]: https://www.google.com/search?q=KevinKlang&start=0&gws_rd=ssl
+[2021-04-25 15:28:27 Info]: http://webcache.googleusercontent.com/search?q=cache:3c_CqKbSX6oJ:www.kevinklang.de/+&cd=1&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://www.google.com/search?q=related:www.kevinklang.de/+KevinKlang&sa=X&ved=2ahUKEwjX4t2HwJnwAhUaPOwKHU1FAJ4QH3oECAQQBA
+[2021-04-25 15:28:27 Info]: https://de-de.facebook.com/k1ang
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:U44X6oefJ6YJ:https://de-de.facebook.com/k1ang/+&cd=2&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://m.facebook.com/k1ang/?ref=page_internal&mt_nav=0
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:8gIxCireWt8J:https://m.facebook.com/k1ang/%3Fref%3Dpage_internal%26mt_nav%3D0+&cd=3&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://soundcloud.com/kevinklang
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:sQ-nyJfdqCQJ:https://soundcloud.com/kevinklang+&cd=4&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://www.google.com/search?q=related:https://soundcloud.com/kevinklang+KevinKlang&sa=X&ved=2ahUKEwjX4t2HwJnwAhUaPOwKHU1FAJ4QH3oECAMQBg
+[2021-04-25 15:28:27 Info]: https://www.sofaconcerts.org/artists/KevinKlang
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:VvvLCnhentMJ:https://www.sofaconcerts.org/artists/KevinKlang+&cd=5&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://www.myownmusic.de/kevinklang
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:a8wBcf5qgKoJ:https://www.myownmusic.de/kevinklang+&cd=6&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://www.backstagepro.de/kevin-klang
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:Uqp3uN4SjL8J:https://www.backstagepro.de/kevin-klang+&cd=7&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://atseacompilations.bandcamp.com/track/kevin-klang-weltensatt
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:1i54ibuWwo4J:https://atseacompilations.bandcamp.com/track/kevin-klang-weltensatt+&cd=8&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://music.apple.com/us/artist/kevin-klang/1013013611
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:4dzEbrqZn08J:https://music.apple.com/us/artist/kevin-klang/1013013611+&cd=9&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:27 Info]: https://www.amazon.de/VOM-SUCHEN-FINDEN-KEVIN-KLANG/dp/B01JUKVJCI
+[2021-04-25 15:28:27 Info]: https://webcache.googleusercontent.com/search?q=cache:M1b2MvXJRfMJ:https://www.amazon.de/VOM-SUCHEN-FINDEN-KEVIN-KLANG/dp/B01JUKVJCI+&cd=10&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=20
+[2021-04-25 15:28:28 Info]: http://www.kevinklang.de
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&start=0&gws_rd=ssl
+[2021-04-25 15:28:28 Info]: http://webcache.googleusercontent.com/search?q=cache:3c_CqKbSX6oJ:www.kevinklang.de/+&cd=1&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=related:www.kevinklang.de/+KevinKlang&sa=X&ved=2ahUKEwjX4t2HwJnwAhUaPOwKHU1FAJ4QH3oECAQQBA
+[2021-04-25 15:28:28 Info]: https://de-de.facebook.com/k1ang
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:U44X6oefJ6YJ:https://de-de.facebook.com/k1ang/+&cd=2&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://m.facebook.com/k1ang/?ref=page_internal&mt_nav=0
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:8gIxCireWt8J:https://m.facebook.com/k1ang/%3Fref%3Dpage_internal%26mt_nav%3D0+&cd=3&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://soundcloud.com/kevinklang
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:sQ-nyJfdqCQJ:https://soundcloud.com/kevinklang+&cd=4&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=related:https://soundcloud.com/kevinklang+KevinKlang&sa=X&ved=2ahUKEwjX4t2HwJnwAhUaPOwKHU1FAJ4QH3oECAMQBg
+[2021-04-25 15:28:28 Info]: https://www.sofaconcerts.org/artists/KevinKlang
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:VvvLCnhentMJ:https://www.sofaconcerts.org/artists/KevinKlang+&cd=5&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.myownmusic.de/kevinklang
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:a8wBcf5qgKoJ:https://www.myownmusic.de/kevinklang+&cd=6&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.backstagepro.de/kevin-klang
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:Uqp3uN4SjL8J:https://www.backstagepro.de/kevin-klang+&cd=7&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://atseacompilations.bandcamp.com/track/kevin-klang-weltensatt
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:1i54ibuWwo4J:https://atseacompilations.bandcamp.com/track/kevin-klang-weltensatt+&cd=8&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://music.apple.com/us/artist/kevin-klang/1013013611
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:4dzEbrqZn08J:https://music.apple.com/us/artist/kevin-klang/1013013611+&cd=9&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.amazon.de/VOM-SUCHEN-FINDEN-KEVIN-KLANG/dp/B01JUKVJCI
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:M1b2MvXJRfMJ:https://www.amazon.de/VOM-SUCHEN-FINDEN-KEVIN-KLANG/dp/B01JUKVJCI+&cd=10&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.amazon.de/ALLER-ANFANG-KONVEX-Kevin-Klang/dp/B073M9RKFL
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&start=10
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:psiUluuBSr8J:https://www.amazon.de/ALLER-ANFANG-KONVEX-Kevin-Klang/dp/B073M9RKFL+&cd=11&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.lakesideopenair.de/2017/bands/kevin-klang
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:wDthyLWnld0J:https://www.lakesideopenair.de/2017/bands/kevin-klang+&cd=12&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.instagram.com/kevinklang/?hl=de
+[2021-04-25 15:28:28 Info]: https://translate.google.com/translate?hl=de&sl=en&u=https://www.instagram.com/kevinklang/%3Fhl%3Dde&prev=search&pto=aue
+[2021-04-25 15:28:28 Info]: https://www.youtube.com/channel/UCDazFpkBhPb3YnwXAxOVRlw?feature=emb_ch_name_ex
+[2021-04-25 15:28:28 Info]: https://filstalexpress.de/kultur/28477
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:Qs3QQLkTdnEJ:https://filstalexpress.de/kultur/28477/+&cd=15&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.lisaschwegler.de/fotografie/konkretes-eventfotografie/kevin-klang-giesserei-konstanz
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:ZrZwyKrUj6sJ:https://www.lisaschwegler.de/fotografie/konkretes-eventfotografie/kevin-klang-giesserei-konstanz/+&cd=16&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://mx3.ch/kevinklang
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:_5eBAROD6ysJ:https://mx3.ch/kevinklang+&cd=17&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://open.spotify.com/artist/2oPRAeqHtjavmSXQEYk8yp
+[2021-04-25 15:28:28 Info]: https://webcache.googleusercontent.com/search?q=cache:IsufoL3oaMcJ:https://open.spotify.com/artist/2oPRAeqHtjavmSXQEYk8yp+&cd=18&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?source=univ&tbm=isch&q=KevinKlang&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCMmQR6BAgeEAE
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:singer+songwriter:Kv2a18hY9rU%3D&usg=AI4_-kQb49-DUiWkfRUAXd1MYmNgd4Xp6Q&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoAHoECB4QBw
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:konstanz:R0EZImmQ_1c%3D&usg=AI4_-kRtkjaM3pgqLIZZpRpJSTHZ4PjfhA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoAXoECB4QCw
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:twitter:bnZo4xwRGrc%3D&usg=AI4_-kTJ5XTu0dHV9Ta-DiCKa5IXXA44qg&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoAnoECB4QDw
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:tweets:EO8YoVXmb6s%3D&usg=AI4_-kR75JGb9OI6ijBdq7SLx3nLMxYFYA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoA3oECB4QEw
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:music:t0jfIEDXVfI%3D&usg=AI4_-kRt-wgck_rSkcG0iFqqvkNlg9N8sA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoBHoECB4QFw
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=M_qtSCBidKnLeM%252CkVJBut5m6PvndM%252C_&vet=1&usg=AI4_-kTpCFNd75-igynaQr1C2yA6hlHz-g&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCsQAQ#imgrc=M_qtSCBidKnLeM
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=6rkehaQwLhd_GM%252C3c_CqKbSX6rnHM%252C_&vet=1&usg=AI4_-kSGln6ISCVOuF9BUO_tqoOw6I-ZpA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCoQAQ#imgrc=6rkehaQwLhd_GM
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=Mj74LDaZ6LwVNM%252CVvvLCnhentN6fM%252C_&vet=1&usg=AI4_-kQsXmHy1w3yisROcYIm84WtOUyP_w&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCcQAQ#imgrc=Mj74LDaZ6LwVNM
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=DSZ85m7fncWD2M%252CwDthyLWnld2AiM%252C_&vet=1&usg=AI4_-kTyFyR0ayovSjmB6tyk-S4ngiODUA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCgQAQ#imgrc=DSZ85m7fncWD2M
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=4CaMxV24G7Qr7M%252CQs3QQLkTdnFc7M%252C_&vet=1&usg=AI4_-kQdvqG-wBoAtS35fpxooSs855CiVA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCUQAQ#imgrc=4CaMxV24G7Qr7M
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=XAjN3ECIZWq1NM%252CVQhUpE9iF5BYXM%252C_&vet=1&usg=AI4_-kTQYpB9L3oC6jTQgaqH42xH5_lKTg&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCYQAQ#imgrc=XAjN3ECIZWq1NM
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=cOlXQ_yKQvmY2M%252Cb4wBYD_sDx9fHM%252C_&vet=1&usg=AI4_-kSG3AOz-gY5sxp1soLkwDot7qvgag&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCIQAQ#imgrc=cOlXQ_yKQvmY2M
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=KYkZTnsb8s24EM%252CM1b2MvXJRfN0XM%252C_&vet=1&usg=AI4_-kSGop-uLqemlPTusWObZnXw9n2nKQ&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCEQAQ#imgrc=KYkZTnsb8s24EM
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=SF693Ukagi8_tM%252C8gIxCireWt-yCM%252C_&vet=1&usg=AI4_-kRnBltCK1M4tccVreUm85_cAM-22g&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECB8QAQ#imgrc=SF693Ukagi8_tM
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=xvNA0qH18kfUkM%252CM1b2MvXJRfN0XM%252C_&vet=1&usg=AI4_-kTJ8VbaE3faWplcnStGXswNGnUrnQ&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCAQAQ#imgrc=xvNA0qH18kfUkM
+[2021-04-25 15:28:28 Info]: https://www.google.com/search?source=univ&tbm=isch&q=KevinKlang&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChDsCXoECB4QHQ
+[2021-04-25 15:28:28 Info]: https://www.swp.de/suedwesten/landkreise/lk-goeppingen/liedermacher-kevin-klang-in-heininger-studio-22741479.html
+[2021-04-25 15:28:29 Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=30
+[2021-04-25 15:28:29 Info]: http://www.kevinklang.de
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&start=0&gws_rd=ssl
+[2021-04-25 15:28:29 Info]: http://webcache.googleusercontent.com/search?q=cache:3c_CqKbSX6oJ:www.kevinklang.de/+&cd=1&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=related:www.kevinklang.de/+KevinKlang&sa=X&ved=2ahUKEwjX4t2HwJnwAhUaPOwKHU1FAJ4QH3oECAQQBA
+[2021-04-25 15:28:29 Info]: https://de-de.facebook.com/k1ang
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:U44X6oefJ6YJ:https://de-de.facebook.com/k1ang/+&cd=2&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://m.facebook.com/k1ang/?ref=page_internal&mt_nav=0
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:8gIxCireWt8J:https://m.facebook.com/k1ang/%3Fref%3Dpage_internal%26mt_nav%3D0+&cd=3&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://soundcloud.com/kevinklang
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:sQ-nyJfdqCQJ:https://soundcloud.com/kevinklang+&cd=4&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=related:https://soundcloud.com/kevinklang+KevinKlang&sa=X&ved=2ahUKEwjX4t2HwJnwAhUaPOwKHU1FAJ4QH3oECAMQBg
+[2021-04-25 15:28:29 Info]: https://www.sofaconcerts.org/artists/KevinKlang
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:VvvLCnhentMJ:https://www.sofaconcerts.org/artists/KevinKlang+&cd=5&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.myownmusic.de/kevinklang
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:a8wBcf5qgKoJ:https://www.myownmusic.de/kevinklang+&cd=6&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.backstagepro.de/kevin-klang
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:Uqp3uN4SjL8J:https://www.backstagepro.de/kevin-klang+&cd=7&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://atseacompilations.bandcamp.com/track/kevin-klang-weltensatt
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:1i54ibuWwo4J:https://atseacompilations.bandcamp.com/track/kevin-klang-weltensatt+&cd=8&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://music.apple.com/us/artist/kevin-klang/1013013611
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:4dzEbrqZn08J:https://music.apple.com/us/artist/kevin-klang/1013013611+&cd=9&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.amazon.de/VOM-SUCHEN-FINDEN-KEVIN-KLANG/dp/B01JUKVJCI
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:M1b2MvXJRfMJ:https://www.amazon.de/VOM-SUCHEN-FINDEN-KEVIN-KLANG/dp/B01JUKVJCI+&cd=10&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.amazon.de/ALLER-ANFANG-KONVEX-Kevin-Klang/dp/B073M9RKFL
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&start=10
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:psiUluuBSr8J:https://www.amazon.de/ALLER-ANFANG-KONVEX-Kevin-Klang/dp/B073M9RKFL+&cd=11&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.lakesideopenair.de/2017/bands/kevin-klang
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:wDthyLWnld0J:https://www.lakesideopenair.de/2017/bands/kevin-klang+&cd=12&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.instagram.com/kevinklang/?hl=de
+[2021-04-25 15:28:29 Info]: https://translate.google.com/translate?hl=de&sl=en&u=https://www.instagram.com/kevinklang/%3Fhl%3Dde&prev=search&pto=aue
+[2021-04-25 15:28:29 Info]: https://www.youtube.com/channel/UCDazFpkBhPb3YnwXAxOVRlw?feature=emb_ch_name_ex
+[2021-04-25 15:28:29 Info]: https://filstalexpress.de/kultur/28477
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:Qs3QQLkTdnEJ:https://filstalexpress.de/kultur/28477/+&cd=15&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.lisaschwegler.de/fotografie/konkretes-eventfotografie/kevin-klang-giesserei-konstanz
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:ZrZwyKrUj6sJ:https://www.lisaschwegler.de/fotografie/konkretes-eventfotografie/kevin-klang-giesserei-konstanz/+&cd=16&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://mx3.ch/kevinklang
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:_5eBAROD6ysJ:https://mx3.ch/kevinklang+&cd=17&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://open.spotify.com/artist/2oPRAeqHtjavmSXQEYk8yp
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:IsufoL3oaMcJ:https://open.spotify.com/artist/2oPRAeqHtjavmSXQEYk8yp+&cd=18&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?source=univ&tbm=isch&q=KevinKlang&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCMmQR6BAgeEAE
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:singer+songwriter:Kv2a18hY9rU%3D&usg=AI4_-kQb49-DUiWkfRUAXd1MYmNgd4Xp6Q&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoAHoECB4QBw
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:konstanz:R0EZImmQ_1c%3D&usg=AI4_-kRtkjaM3pgqLIZZpRpJSTHZ4PjfhA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoAXoECB4QCw
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:twitter:bnZo4xwRGrc%3D&usg=AI4_-kTJ5XTu0dHV9Ta-DiCKa5IXXA44qg&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoAnoECB4QDw
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:tweets:EO8YoVXmb6s%3D&usg=AI4_-kR75JGb9OI6ijBdq7SLx3nLMxYFYA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoA3oECB4QEw
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&chips=q:kevinklang,online_chips:music:t0jfIEDXVfI%3D&usg=AI4_-kRt-wgck_rSkcG0iFqqvkNlg9N8sA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChCAigMoBHoECB4QFw
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=M_qtSCBidKnLeM%252CkVJBut5m6PvndM%252C_&vet=1&usg=AI4_-kTpCFNd75-igynaQr1C2yA6hlHz-g&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCsQAQ#imgrc=M_qtSCBidKnLeM
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=6rkehaQwLhd_GM%252C3c_CqKbSX6rnHM%252C_&vet=1&usg=AI4_-kSGln6ISCVOuF9BUO_tqoOw6I-ZpA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCoQAQ#imgrc=6rkehaQwLhd_GM
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=Mj74LDaZ6LwVNM%252CVvvLCnhentN6fM%252C_&vet=1&usg=AI4_-kQsXmHy1w3yisROcYIm84WtOUyP_w&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCcQAQ#imgrc=Mj74LDaZ6LwVNM
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=DSZ85m7fncWD2M%252CwDthyLWnld2AiM%252C_&vet=1&usg=AI4_-kTyFyR0ayovSjmB6tyk-S4ngiODUA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCgQAQ#imgrc=DSZ85m7fncWD2M
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=4CaMxV24G7Qr7M%252CQs3QQLkTdnFc7M%252C_&vet=1&usg=AI4_-kQdvqG-wBoAtS35fpxooSs855CiVA&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCUQAQ#imgrc=4CaMxV24G7Qr7M
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=XAjN3ECIZWq1NM%252CVQhUpE9iF5BYXM%252C_&vet=1&usg=AI4_-kTQYpB9L3oC6jTQgaqH42xH5_lKTg&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCYQAQ#imgrc=XAjN3ECIZWq1NM
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=cOlXQ_yKQvmY2M%252Cb4wBYD_sDx9fHM%252C_&vet=1&usg=AI4_-kSG3AOz-gY5sxp1soLkwDot7qvgag&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCIQAQ#imgrc=cOlXQ_yKQvmY2M
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=KYkZTnsb8s24EM%252CM1b2MvXJRfN0XM%252C_&vet=1&usg=AI4_-kSGop-uLqemlPTusWObZnXw9n2nKQ&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCEQAQ#imgrc=KYkZTnsb8s24EM
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=SF693Ukagi8_tM%252C8gIxCireWt-yCM%252C_&vet=1&usg=AI4_-kRnBltCK1M4tccVreUm85_cAM-22g&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECB8QAQ#imgrc=SF693Ukagi8_tM
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&tbm=isch&source=iu&ictx=1&fir=xvNA0qH18kfUkM%252CM1b2MvXJRfN0XM%252C_&vet=1&usg=AI4_-kTJ8VbaE3faWplcnStGXswNGnUrnQ&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChD1AXoECCAQAQ#imgrc=xvNA0qH18kfUkM
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?source=univ&tbm=isch&q=KevinKlang&sa=X&ved=2ahUKEwjkx8CIwJnwAhWRu6QKHVilAfc4ChDsCXoECB4QHQ
+[2021-04-25 15:28:29 Info]: https://www.swp.de/suedwesten/landkreise/lk-goeppingen/liedermacher-kevin-klang-in-heininger-studio-22741479.html
+[2021-04-25 15:28:29 Info]: https://twitter.com/kevinklang
+[2021-04-25 15:28:29 Info]: https://www.google.com/search?q=KevinKlang&start=20
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:4sSOeLOZzpYJ:https://twitter.com/kevinklang+&cd=21&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://translate.google.com/translate?hl=de&sl=en&u=https://twitter.com/kevinklang&prev=search&pto=aue
+[2021-04-25 15:28:29 Info]: https://jwsoundgroup.net/index.php?/profile/2827-kevinsound
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:EfpR206L_tQJ:https://jwsoundgroup.net/index.php%3F/profile/2827-kevinsound/+&cd=22&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://translate.google.com/translate?hl=de&sl=en&u=https://jwsoundgroup.net/index.php%3F/profile/2827-kevinsound/&prev=search&pto=aue
+[2021-04-25 15:28:29 Info]: http://www.chartsinfrance.net/Kevin-Klang/albums-singles.html
+[2021-04-25 15:28:29 Info]: http://webcache.googleusercontent.com/search?q=cache:4MTZQwmUXHgJ:www.chartsinfrance.net/Kevin-Klang/albums-singles.html+&cd=23&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.badische-zeitung.de/kevin-klang-in-muellheim--138985168.html
+[2021-04-25 15:28:29 Info]: https://www.musixmatch.com/de/songtext/Kevin-Klang/Der-Abend-ist-noch-Jung
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:rX6pt3E23y4J:https://www.musixmatch.com/de/songtext/Kevin-Klang/Der-Abend-ist-noch-Jung+&cd=25&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.linkedin.com/pub/dir/Kevin/Klang
+[2021-04-25 15:28:29 Info]: https://translate.google.com/translate?hl=de&sl=en&u=https://www.linkedin.com/pub/dir/Kevin/Klang&prev=search&pto=aue
+[2021-04-25 15:28:29 Info]: https://www.amazon.com/Aller-Anfang-Konvex-Kevin-Klang/dp/B0713X3XDS
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:HfjMXEx6JXcJ:https://www.amazon.com/Aller-Anfang-Konvex-Kevin-Klang/dp/B0713X3XDS+&cd=27&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://translate.google.com/translate?hl=de&sl=en&u=https://www.amazon.com/Aller-Anfang-Konvex-Kevin-Klang/dp/B0713X3XDS&prev=search&pto=aue
+[2021-04-25 15:28:29 Info]: https://stauferkrone.de/archiv-2017.html
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:CuxtsL1JVbAJ:https://stauferkrone.de/archiv-2017.html+&cd=28&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.startnext.com/aljosha-konter/unterstuetzer
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:wk6oFfkbkOcJ:https://www.startnext.com/aljosha-konter/unterstuetzer+&cd=29&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:29 Info]: https://www.bochumtotal.de/bandecke/detail-5774.html
+[2021-04-25 15:28:29 Info]: https://webcache.googleusercontent.com/search?q=cache:1pOcWNXknOkJ:https://www.bochumtotal.de/bandecke/detail-5774.html+&cd=30&hl=de&ct=clnk&gl=de
+[2021-04-25 15:28:30 Info]: http://www.kevinklang.de

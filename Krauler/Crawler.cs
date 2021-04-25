@@ -86,7 +86,7 @@ namespace Krauler
                 return;
             }
 
-            IEnumerable<TData>? clonedDataList = createClonedData ? inputDataList?.ToList() : null;
+            IEnumerable<TData>? clonedDataList = createClonedData ? inputDataList.ToHashSet() : null;
             SubmitData(DataProcessor, createClonedData ? clonedDataList : inputDataList);
         }
 
