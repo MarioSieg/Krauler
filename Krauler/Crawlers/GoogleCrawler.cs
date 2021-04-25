@@ -56,7 +56,7 @@ namespace Krauler.Crawlers
 
         public override string ToString()
         {
-            return Url + ": " + Title + "\r\n" + Description;
+            return "\r\n" + Url + ": " + Title + "\r\n >> " + Description;
         }
     }
 
