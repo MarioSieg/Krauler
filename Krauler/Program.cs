@@ -19,6 +19,9 @@ namespace Krauler
             catch (Exception e)
             {
                 Logger.Instance.Write(e);
+            }
+            finally
+            {
                 Logger.Instance.Flush();
             }
         }
