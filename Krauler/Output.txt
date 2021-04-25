@@ -1,0 +1,71 @@
+[4/25/2021 2:59:24 PM Info]: Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!
+[4/25/2021 2:59:24 PM Info]: Current working directory: C:\Mario\Projects\Krauler\Krauler
+[4/25/2021 2:59:24 PM Info]: Loaded 2482 proxies!
+[4/25/2021 2:59:24 PM Info]: Loaded 10563 user agents!
+[4/25/2021 2:59:25 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=0
+[4/25/2021 2:59:25 PM Info]: Confirmed google usage 1 by By.TagName: button
+[4/25/2021 2:59:25 PM Info]: Confirmed google usage 1 by By.XPath: //button[@id='zV9nZe']
+[4/25/2021 2:59:26 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=10
+[4/25/2021 2:59:26 PM Info]: http://www.kevinklang.de
+[4/25/2021 2:59:26 PM Info]: https://de-de.facebook.com
+[4/25/2021 2:59:26 PM Info]: https://m.facebook.com
+[4/25/2021 2:59:26 PM Info]: https://soundcloud.com
+[4/25/2021 2:59:26 PM Info]: https://www.sofaconcerts.org
+[4/25/2021 2:59:26 PM Info]: https://www.myownmusic.de
+[4/25/2021 2:59:26 PM Info]: https://www.backstagepro.de
+[4/25/2021 2:59:26 PM Info]: https://atseacompilations.bandcamp.com
+[4/25/2021 2:59:26 PM Info]: https://www.amazon.de
+[4/25/2021 2:59:26 PM Info]: https://music.apple.com
+[4/25/2021 2:59:27 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=20
+[4/25/2021 2:59:27 PM Info]: http://www.kevinklang.de
+[4/25/2021 2:59:27 PM Info]: https://de-de.facebook.com
+[4/25/2021 2:59:27 PM Info]: https://m.facebook.com
+[4/25/2021 2:59:27 PM Info]: https://soundcloud.com
+[4/25/2021 2:59:27 PM Info]: https://www.sofaconcerts.org
+[4/25/2021 2:59:27 PM Info]: https://www.myownmusic.de
+[4/25/2021 2:59:27 PM Info]: https://www.backstagepro.de
+[4/25/2021 2:59:27 PM Info]: https://atseacompilations.bandcamp.com
+[4/25/2021 2:59:27 PM Info]: https://www.amazon.de
+[4/25/2021 2:59:27 PM Info]: https://music.apple.com
+[4/25/2021 2:59:27 PM Info]: https://bardentreffen.nuernberg.de
+[4/25/2021 2:59:27 PM Info]: https://www.swp.de
+[4/25/2021 2:59:27 PM Info]: https://www.youtube.com
+[4/25/2021 2:59:27 PM Info]: https://music.apple.com
+[4/25/2021 2:59:27 PM Info]: https://www.instagram.com
+[4/25/2021 2:59:27 PM Info]: https://filstalexpress.de
+[4/25/2021 2:59:27 PM Info]: https://www.lisaschwegler.de
+[4/25/2021 2:59:27 PM Info]: https://twitter.com
+[4/25/2021 2:59:27 PM Info]: https://open.spotify.com
+[4/25/2021 2:59:27 PM Info]: https://mx3.ch
+[4/25/2021 2:59:28 PM Info]: GoTo Url: http://google.com//search?q=KevinKlang&start=30
+[4/25/2021 2:59:28 PM Info]: http://www.kevinklang.de
+[4/25/2021 2:59:28 PM Info]: https://de-de.facebook.com
+[4/25/2021 2:59:28 PM Info]: https://m.facebook.com
+[4/25/2021 2:59:28 PM Info]: https://soundcloud.com
+[4/25/2021 2:59:28 PM Info]: https://www.sofaconcerts.org
+[4/25/2021 2:59:28 PM Info]: https://www.myownmusic.de
+[4/25/2021 2:59:28 PM Info]: https://www.backstagepro.de
+[4/25/2021 2:59:28 PM Info]: https://atseacompilations.bandcamp.com
+[4/25/2021 2:59:28 PM Info]: https://www.amazon.de
+[4/25/2021 2:59:28 PM Info]: https://music.apple.com
+[4/25/2021 2:59:28 PM Info]: https://bardentreffen.nuernberg.de
+[4/25/2021 2:59:28 PM Info]: https://www.swp.de
+[4/25/2021 2:59:28 PM Info]: https://www.youtube.com
+[4/25/2021 2:59:28 PM Info]: https://music.apple.com
+[4/25/2021 2:59:28 PM Info]: https://www.instagram.com
+[4/25/2021 2:59:28 PM Info]: https://filstalexpress.de
+[4/25/2021 2:59:28 PM Info]: https://www.lisaschwegler.de
+[4/25/2021 2:59:28 PM Info]: https://twitter.com
+[4/25/2021 2:59:28 PM Info]: https://open.spotify.com
+[4/25/2021 2:59:28 PM Info]: https://mx3.ch
+[4/25/2021 2:59:28 PM Info]: https://jwsoundgroup.net
+[4/25/2021 2:59:28 PM Info]: http://www.chartsinfrance.net
+[4/25/2021 2:59:28 PM Info]: https://www.badische-zeitung.de
+[4/25/2021 2:59:28 PM Info]: https://www.musixmatch.com
+[4/25/2021 2:59:28 PM Info]: https://www.linkedin.com
+[4/25/2021 2:59:28 PM Info]: https://www.amazon.com
+[4/25/2021 2:59:28 PM Info]: https://stauferkrone.de
+[4/25/2021 2:59:28 PM Info]: https://www.startnext.com
+[4/25/2021 2:59:28 PM Info]: https://www.bochumtotal.de
+[4/25/2021 2:59:28 PM Info]: https://komponistenverband.de
+[4/25/2021 2:59:29 PM Info]: http://www.kevinklang.de

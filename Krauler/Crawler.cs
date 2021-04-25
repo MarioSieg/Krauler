@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+
+// ReSharper disable PossibleMultipleEnumeration
 
 namespace Krauler
 {
     /// <summary>
-    ///     Base class for all crawlers. 
+    ///     Base class for all crawlers.
     /// </summary>
     public abstract class Crawler<TData> where TData : class
     {
@@ -51,28 +55,43 @@ namespace Krauler
         /// <param name="task"></param>
         /// <param name="x"></param>
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        protected async void SubmitData(Refiner task, IEnumerable<TData> x)
+        protected async void SubmitData(Refiner task, IEnumerable<TData>? x)
         {
-            await Task.Run(() =>
+            try
             {
-                var result = task(x);
-                lock (Results)
+                await Task.Run(() =>
                 {
-                    if (result != null)
+                    var result = task(x);
+                    lock (Results)
+                    {
+                        if (result == null)
+                            return;
                         foreach (var y in result)
                             Results.Add(y);
-                }
-            });
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write($"Submit data failed: {ex.Message}", LogLevel.Error);
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void SubmitData(IEnumerable<TData> x)
+        protected void SubmitData(IEnumerable<TData>? inputDataList, bool createClonedData = true)
         {
-            SubmitData(DataProcessor, x);
+            if (inputDataList == null || !inputDataList.Any())
+            {
+                Logger.Instance.Write("Input data list is empty or null!", LogLevel.Warning);
+                return;
+            }
+
+            IEnumerable<TData>? clonedDataList = createClonedData ? inputDataList?.ToList() : null;
+            SubmitData(DataProcessor, createClonedData ? clonedDataList : inputDataList);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected virtual IEnumerable<TData>? DataProcessor(IEnumerable<TData> rawText)
+        protected virtual IEnumerable<TData>? DataProcessor(IEnumerable<TData>? rawText)
         {
             return null;
         }
@@ -143,6 +162,6 @@ namespace Krauler
             }
         }
 
-        protected delegate IEnumerable<TData>? Refiner(IEnumerable<TData> x);
+        protected delegate IEnumerable<TData>? Refiner(IEnumerable<TData>? x);
     }
 }

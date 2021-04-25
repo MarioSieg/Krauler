@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using static Krauler.Utility;
@@ -32,10 +31,10 @@ namespace Krauler.Crawlers
 
         public PageLoadStrategy PageLoadStrategy = PageLoadStrategy.Normal;
 
-        public byte TabCount = 2;
-
         // -1 = loop forever
         public sbyte RetryCount = -1;
+
+        public byte TabCount = 2;
 
         public bool UseProxy = false;
 
@@ -104,18 +103,18 @@ namespace Krauler.Crawlers
             for (uint i = 1; i < maxSearchPages; ++i)
             {
                 var url = $"{_config.ServerHeader.Uri}/search?q={query}&start={(i - 1) * 10}";
-                    Logger.Instance.WriteLine($"GoTo Url: {url}");
+                Logger.Instance.WriteLine($"GoTo Url: {url}");
                 _driver.Navigate().GoToUrl(url);
-                
+
                 if (i == 1) // google confirm only at first call 
                 {
                     if (_driver.FindElementSafe(By.TagName("button")) != null)
                         GoogleUsageConfirmer(By.TagName("button"));
-                    
+
                     if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
                         GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
                 }
-                
+
                 IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
 
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
@@ -123,9 +122,9 @@ namespace Krauler.Crawlers
             }
         }
 
-        protected override IEnumerable<string> DataProcessor(IEnumerable<string> rawText)
+        protected override IEnumerable<string> DataProcessor(IEnumerable<string>? rawText)
         {
-            foreach (var text in rawText)
+            foreach (var text in rawText!)
                 if (text.Contains("http"))
                     yield return LinkParser.Match(text).Value;
             DumpResults();
