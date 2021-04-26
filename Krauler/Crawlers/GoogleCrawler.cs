@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using static System.String;
+using CsvHelper;
+using System.IO;
+using System.Text;
 
 namespace Krauler.Crawlers
 {
@@ -50,9 +53,9 @@ namespace Krauler.Crawlers
 
     public struct GoogleCrawlerResult
     {
-        public string Url;
-        public string Title;
-        public string Description;
+        public string Url { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
 
         public override string ToString()
         {
@@ -119,7 +122,7 @@ namespace Krauler.Crawlers
             
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
             const string? query = "KevinKlang";
-            const ushort maxSearchPages = 3;
+            const ushort maxSearchPages = 5;
 
             for (uint i = 1; i < maxSearchPages; ++i)
             {
@@ -129,8 +132,8 @@ namespace Krauler.Crawlers
 
                 if (i == 1) // google confirm only at first call 
                 {
-                    // if (_driver.FindElementSafe(By.TagName("button")) != null)
-                    //    GoogleUsageConfirmer(By.TagName("button"));
+                     if (_driver.FindElementSafe(By.TagName("button")) != null)
+                        GoogleUsageConfirmer(By.TagName("button"));
 
                     if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
                         GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
@@ -146,6 +149,7 @@ namespace Krauler.Crawlers
                     RawUrlDescription = x.FindElementSafe(By.XPath(".//following::div[@class='IsZvec']"))?.Text
                 }));
             }
+            
         }
 
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
@@ -159,12 +163,11 @@ namespace Krauler.Crawlers
                     {
                         Url = raw.RawUrl,
                         Title = raw.RawUrlTitle,
-                        Description = raw.RawUrlDescription ?? Empty,
+                        Description = raw.RawUrlDescription ?? string.Empty,
                     };
                 }
             }
-
-            DumpResults();
+           // DumpResults();
         }
 
         private void GoogleUsageConfirmer(By tagName)
@@ -189,8 +192,24 @@ namespace Krauler.Crawlers
 
         public override void OnDestroy()
         {
+            _driver?.Quit();
+            
+            var dir = Config.ResourcesDir;
+            string outputFile = "result.csv";
+            if (!Directory.Exists(dir))
+            {
+                throw new IOException($"Directory {dir} not existing");
+            }
+            
+            using var writer = new StreamWriter(dir+"/"+outputFile);
+            using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                //csvWriter.WriteHeader<GoogleCrawlerResult>();
+                csvWriter.WriteRecords(Results);
+            }
+            writer.Flush();
+
             //Thread.Sleep(20000);
-            //_chromeDriver?.Quit();
         }
     }
 }
