@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace Krauler
@@ -30,7 +31,22 @@ namespace Krauler
                 }
             }
         }
-        
-        
+
+        public static string ValidateFilePathOrCreateNew(string file)
+        {
+            try
+            {
+                var info = new FileInfo(file);
+                using FileStream stream = info.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+                stream.Close();
+                return file;
+            }
+            catch (IOException)
+            {
+                var time = DateTime.Now;
+                return
+                    $"{file}.{time.ToShortDateString().Replace('/', '-')}-{time.TimeOfDay.Hours}-{time.TimeOfDay.Minutes}-{time.TimeOfDay.Seconds}.bak";
+            }
+        }
     }
 }

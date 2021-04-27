@@ -24,6 +24,7 @@ namespace Krauler
     {
         public const string ConfigDir = "Config/";
         public const string ResourcesDir = "Resources/";
+        public const string LoggingDir = "Logs/";
 
         static Config()
         {

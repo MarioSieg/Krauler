@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using CsvHelper;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using CsvHelper;
-using System.IO;
-using System.Text;
 
 namespace Krauler.Crawlers
 {
@@ -33,11 +32,6 @@ namespace Krauler.Crawlers
         public bool ChromeDriverHideCommandPromptWindow = true;
 
         public PageLoadStrategy PageLoadStrategy = PageLoadStrategy.Normal;
-
-        // -1 = loop forever
-        public sbyte RetryCount = -1;
-
-        public byte TabCount = 2;
 
         public bool UseProxy = false;
 
@@ -119,7 +113,7 @@ namespace Krauler.Crawlers
             ved decodes to tell Google what links you clicked on previous pages on Google to get to the current page (https://valentin.app/ved.html)
             oq = The original query you wanted to search for that you typed in (see q)
             */
-            
+
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
             const string? query = "KevinKlang";
             const ushort maxSearchPages = 5;
@@ -132,7 +126,7 @@ namespace Krauler.Crawlers
 
                 if (i == 1) // google confirm only at first call 
                 {
-                     if (_driver.FindElementSafe(By.TagName("button")) != null)
+                    if (_driver.FindElementSafe(By.TagName("button")) != null)
                         GoogleUsageConfirmer(By.TagName("button"));
 
                     if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
@@ -149,25 +143,21 @@ namespace Krauler.Crawlers
                     RawUrlDescription = x.FindElementSafe(By.XPath(".//following::div[@class='IsZvec']"))?.Text
                 }));
             }
-            
         }
 
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
             foreach (var raw in rawData!)
-            {
                 // exclude results from google cache archive or google internal links
-                if (raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
-                {
+                if (raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") &&
+                    !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
                     yield return new GoogleCrawlerResult
                     {
                         Url = raw.RawUrl,
                         Title = raw.RawUrlTitle,
-                        Description = raw.RawUrlDescription ?? string.Empty,
+                        Description = raw.RawUrlDescription ?? string.Empty
                     };
-                }
-            }
-           // DumpResults();
+            // DumpResults();
         }
 
         private void GoogleUsageConfirmer(By tagName)
@@ -191,20 +181,18 @@ namespace Krauler.Crawlers
         public override void OnDestroy()
         {
             _driver?.Quit();
-            
-            var dir = Config.ResourcesDir;
-            string outputFile = "result.csv";
-            if (!Directory.Exists(dir))
-            {
-                throw new IOException($"Directory {dir} not existing");
-            }
-            
-            using var writer = new StreamWriter(dir+"/"+outputFile);
+
+            const string? dir = Config.ResourcesDir;
+            const string outputFile = "Result.csv";
+            if (!Directory.Exists(dir)) throw new IOException($"Directory {dir} not existing");
+
+            using var writer = new StreamWriter(dir + "/" + outputFile);
             using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 //csvWriter.WriteHeader<GoogleCrawlerResult>();
                 csvWriter.WriteRecords(Results);
             }
+
             writer.Flush();
 
             //Thread.Sleep(20000);
