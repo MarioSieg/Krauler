@@ -152,12 +152,17 @@ namespace Krauler.Crawlers
 
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
-            return from raw in rawData! let a = raw.RawUrl.Contains("http") let b = !raw.RawUrl.Contains("webcache") let c = !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host) where a && b && c select new GoogleCrawlerResult
-            {
-                Url = raw.RawUrl,
-                Title = raw.RawUrlTitle,
-                Description = raw.RawUrlDescription ?? string.Empty
-            };
+            return from raw in rawData!
+                let a = raw.RawUrl.Contains("http")
+                let b = !raw.RawUrl.Contains("webcache")
+                let c = !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host)
+                where a && b && c
+                select new GoogleCrawlerResult
+                {
+                    Url = raw.RawUrl,
+                    Title = raw.RawUrlTitle,
+                    Description = raw.RawUrlDescription ?? string.Empty
+                };
             // DumpResults();
         }
 
@@ -167,7 +172,6 @@ namespace Krauler.Crawlers
             if (_driver?.WindowHandles == null)
                 throw new NullReferenceException();
             foreach (var handle in _driver.WindowHandles)
-            {
                 try
                 {
                     _driver.SwitchTo().Window(handle);
@@ -178,7 +182,6 @@ namespace Krauler.Crawlers
                 {
                     Logger.Instance.Write(ex);
                 }
-            }
         }
 
         public override void OnDestroy()
