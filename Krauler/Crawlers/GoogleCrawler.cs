@@ -145,18 +145,19 @@ namespace Krauler.Crawlers
             }
         }
 
+        private static int B2I(bool x)
+        {
+            return x ? 1 : 0;
+        }
+
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
-            foreach (var raw in rawData!)
-                // exclude results from google cache archive or google internal links
-                if (raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") &&
-                    !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
-                    yield return new GoogleCrawlerResult
-                    {
-                        Url = raw.RawUrl,
-                        Title = raw.RawUrlTitle,
-                        Description = raw.RawUrlDescription ?? string.Empty
-                    };
+            return from raw in rawData! let a = raw.RawUrl.Contains("http") let b = !raw.RawUrl.Contains("webcache") let c = !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host) where a && b && c select new GoogleCrawlerResult
+            {
+                Url = raw.RawUrl,
+                Title = raw.RawUrlTitle,
+                Description = raw.RawUrlDescription ?? string.Empty
+            };
             // DumpResults();
         }
 
@@ -166,6 +167,7 @@ namespace Krauler.Crawlers
             if (_driver?.WindowHandles == null)
                 throw new NullReferenceException();
             foreach (var handle in _driver.WindowHandles)
+            {
                 try
                 {
                     _driver.SwitchTo().Window(handle);
@@ -176,6 +178,7 @@ namespace Krauler.Crawlers
                 {
                     Logger.Instance.Write(ex);
                 }
+            }
         }
 
         public override void OnDestroy()
@@ -187,13 +190,9 @@ namespace Krauler.Crawlers
             if (!Directory.Exists(dir)) throw new IOException($"Directory {dir} not existing");
 
             using var writer = new StreamWriter(dir + "/" + outputFile);
-            using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                //csvWriter.WriteHeader<GoogleCrawlerResult>();
-                csvWriter.WriteRecords(Results);
-            }
-
-            writer.Flush();
+            using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            //csvWriter.WriteHeader<GoogleCrawlerResult>();
+            csvWriter.WriteRecords(Results);
 
             //Thread.Sleep(20000);
         }

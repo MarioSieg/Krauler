@@ -92,6 +92,7 @@ namespace Krauler
                 Logger.Instance.Write("Input data list is empty or null!", LogLevel.Warning);
                 return;
             }
+
             IEnumerable<TRawData>? clonedDataList = createClonedData ? inputDataList.ToHashSet() : null;
             timings[0] = DateTime.Now;
             SubmitData(DataProcessor, createClonedData ? clonedDataList : inputDataList);
