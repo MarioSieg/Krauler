@@ -79,7 +79,7 @@ namespace Krauler
             }
             catch (Exception ex)
             {
-                Logger.Instance.Write($"Submit data failed: {ex.Message}", LogLevel.Error);
+                Logger.Instance.Write($"Submit data failed: {ex}", LogLevel.Error);
             }
         }
 

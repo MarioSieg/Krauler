@@ -9,6 +9,7 @@ using OpenQA.Selenium.Chrome;
 using CsvHelper;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace Krauler.Crawlers
 {
@@ -121,44 +122,90 @@ namespace Krauler.Crawlers
             */
             
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
-            const string? query = "KevinKlang";
-            const ushort maxSearchPages = 5;
+            const string? query = "Singer Songwriter";
+            const ushort maxSearchPages = 5; // the number of pages to search
+            const ushort maxResults = 5; // the number of max results
 
             for (uint i = 1; i < maxSearchPages; ++i)
             {
-                var url = $"{_config.ServerHeader.Uri}/search?q={query}&start={(i - 1) * 10}";
-                Logger.Instance.WriteLine($"GoTo Url: {url}");
-                _driver.Navigate().GoToUrl(url);
-
-                if (i == 1) // google confirm only at first call 
-                {
-                     if (_driver.FindElementSafe(By.TagName("button")) != null)
-                        GoogleUsageConfirmer(By.TagName("button"));
-
-                    if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
-                        GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
-                }
-
-                IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
-
-                ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
-                SubmitData(searchResults.Select(x => new GoogleCrawlerRawData
-                {
-                    RawUrl = x.GetAttribute("href"),
-                    RawUrlTitle = x.Text,
-                    RawUrlDescription = x.FindElementSafe(By.XPath(".//following::div[@class='IsZvec']"))?.Text
-                }));
+                //GoogleLinksCrawler(query, i);
+                GoogleImageCrawler(query, i);
             }
             
+        }
+        private void GoogleImageCrawler(string query, uint i)
+        {
+            if (i == 1) // google confirm only at first call 
+            {
+                var url = $"{_config.ServerHeader.Uri}/search?q={query}&tbm=isch";
+                Logger.Instance.WriteLine($"GoTo Url: {url}");
+                Debug.Assert(_driver != null, nameof(_driver) + " != null");
+                
+                _driver.Navigate().GoToUrl(url);
+                if (_driver.FindElementSafe(By.TagName("button")) != null)
+                    // GoogleUsageConfirmer(By.TagName("button"));
+
+                if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
+                    GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
+            }
+            else
+            {
+                _ = ((IJavaScriptExecutor?) _driver)?.ExecuteScript("window.scrollBy(0,document.body.scrollHeight)");
+            }
+
+            Debug.Assert(_driver != null, nameof(_driver) + " != null"); 
+            
+            if(_driver.FindElementSafe(By.XPath("/html/body/div[2]/c-wiz/div[3]/div[1]/div/div/div/div/div[5]/input"))!= null)
+                _driver.FindElement(By.XPath("/html/body/div[2]/c-wiz/div[3]/div[1]/div/div/div/div/div[5]/input")).Click();
+            Thread.Sleep(500);
+
+            IWebElement resultsPanel = _driver.FindElement(By.Id("islmp"));
+            ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
+            IEnumerable<GoogleCrawlerRawData> inputData = searchResults.Select(x => new GoogleCrawlerRawData
+            {
+                RawUrl = x.GetAttribute("href"),
+                RawUrlTitle = x.Text,
+            });
+            SubmitData(inputData);
+        }
+        private void GoogleLinksCrawler(string query, uint i)
+        {
+            var url = $"{_config.ServerHeader.Uri}/search?q={query}&start={(i - 1) * 10}";
+            Logger.Instance.WriteLine($"GoTo Url: {url}");
+            _driver.Navigate().GoToUrl(url);
+
+            if (i == 1) // google confirm only at first call 
+            {
+                if (_driver.FindElementSafe(By.TagName("button")) != null)
+                    GoogleUsageConfirmer(By.TagName("button"));
+
+                if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
+                    GoogleUsageConfirmer(By.XPath("//button[@id='zV9nZe']"));
+            }
+
+            IWebElement resultsPanel = _driver.FindElement(By.Id("search"));
+
+            ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
+            SubmitData(searchResults.Select(x => new GoogleCrawlerRawData
+            {
+                RawUrl = x.GetAttribute("href"),
+                RawUrlTitle = x.Text,
+                RawUrlDescription = x.GetAttribute("title")
+            }));
         }
 
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
-            foreach (var raw in rawData!)
+            if (rawData == null || !rawData.Any())
+            {
+                yield break;
+            }
+            foreach (var raw in rawData)
             {
                 // exclude results from google cache archive or google internal links
                 if (raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
                 {
+                    Console.WriteLine(raw.RawUrl);
                     yield return new GoogleCrawlerResult
                     {
                         Url = raw.RawUrl,
@@ -167,7 +214,7 @@ namespace Krauler.Crawlers
                     };
                 }
             }
-           // DumpResults();
+            DumpResults();
         }
 
         private void GoogleUsageConfirmer(By tagName)
@@ -190,24 +237,31 @@ namespace Krauler.Crawlers
 
         public override void OnDestroy()
         {
+            Thread.Sleep(20000);
             _driver?.Quit();
+
+            //SaveToCsvFile();
+
             
+        }
+
+        private void SaveToCsvFile()
+        {
             var dir = Config.ResourcesDir;
             string outputFile = "result.csv";
             if (!Directory.Exists(dir))
             {
                 throw new IOException($"Directory {dir} not existing");
             }
-            
-            using var writer = new StreamWriter(dir+"/"+outputFile);
+
+            using var writer = new StreamWriter(dir + "/" + outputFile);
             using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 //csvWriter.WriteHeader<GoogleCrawlerResult>();
                 csvWriter.WriteRecords(Results);
             }
-            writer.Flush();
 
-            //Thread.Sleep(20000);
+            writer.Flush();
         }
     }
 }
