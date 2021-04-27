@@ -87,6 +87,7 @@ namespace Krauler
         protected void SubmitData(IEnumerable<TRawData>? inputDataList, bool createClonedData = true)
         {
             Span<DateTime> timings = stackalloc DateTime[2];
+
             if (inputDataList == null || !inputDataList.Any())
             {
                 Logger.Instance.Write("Input data list is empty or null!", LogLevel.Warning);
@@ -94,6 +95,7 @@ namespace Krauler
             }
 
             IEnumerable<TRawData>? clonedDataList = createClonedData ? inputDataList.ToHashSet() : null;
+
             timings[0] = DateTime.Now;
             SubmitData(DataProcessor, createClonedData ? clonedDataList : inputDataList);
             timings[1] = DateTime.Now;

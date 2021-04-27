@@ -123,7 +123,7 @@ namespace Krauler.Crawlers
             
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
             const string? query = "Singer Songwriter";
-            const ushort maxSearchPages = 5; // the number of pages to search
+            const ushort maxSearchPages = 2; // the number of pages to search
             const ushort maxResults = 5; // the number of max results
 
             for (uint i = 1; i < maxSearchPages; ++i)
@@ -203,9 +203,8 @@ namespace Krauler.Crawlers
             foreach (var raw in rawData)
             {
                 // exclude results from google cache archive or google internal links
-                if (raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
+                if (!string.IsNullOrEmpty(raw.RawUrl) && raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
                 {
-                    Console.WriteLine(raw.RawUrl);
                     yield return new GoogleCrawlerResult
                     {
                         Url = raw.RawUrl,
