@@ -14,7 +14,7 @@ namespace Krauler
         public static volatile bool InterruptFlag = true;
 
         public ThreadPool(WorkerRoutine routine, ulong maxIterations) : this(routine, maxIterations,
-            (uint)Environment.ProcessorCount) { }
+            (uint) Environment.ProcessorCount) { }
 
         public ThreadPool(WorkerRoutine routine, ulong maxIterations, uint workers)
         {

@@ -35,15 +35,9 @@ namespace Krauler.Crawlers
         public YoutubeCrawlerConfig() : base("https://www.youtube.com/watch?v=6MvcwAvZ1nY") { }
     }
 
-    public struct YoutubeCrawlerRawData
-    {
+    public struct YoutubeCrawlerRawData { }
 
-    }
-
-    public struct YoutubeCrawlerResult
-    {
-
-    }
+    public struct YoutubeCrawlerResult { }
 
     public class YoutubeCrawler : Crawler<YoutubeCrawlerRawData, YoutubeCrawlerResult>
     {

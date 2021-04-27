@@ -144,16 +144,12 @@ namespace Krauler.Crawlers
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
             foreach (var raw in rawData!)
-            {
                 if (raw.Text.Contains("http"))
-                {
                     yield return new GoogleCrawlerResult
                     {
                         Url = LinkParser.Match(raw.Text).Value,
                         Description = string.Empty
                     };
-                }
-            }
 
             DumpResults();
         }
@@ -164,7 +160,6 @@ namespace Krauler.Crawlers
             if (_driver?.WindowHandles == null)
                 throw new NullReferenceException();
             foreach (var handle in _driver.WindowHandles)
-            {
                 try
                 {
                     _driver.SwitchTo().Window(handle);
@@ -175,7 +170,6 @@ namespace Krauler.Crawlers
                 {
                     Logger.Instance.Write(ex);
                 }
-            }
         }
 
         public override void OnDestroy()
