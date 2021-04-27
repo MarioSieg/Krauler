@@ -17,15 +17,8 @@ namespace Krauler
     public sealed class Logger
     {
         public static volatile bool LogToConsole = true;
-        public static Logger Instance = new("Output.txt");
+        public static Logger Instance = new();
 
-        public Logger(string logFile)
-        {
-            LogFile = logFile;
-            if (File.Exists(LogFile)) File.Delete(LogFile);
-        }
-
-        public string LogFile { get; set; }
         public string Stream { get; private set; } = "";
 
         public void Write(Exception ex)
@@ -84,7 +77,12 @@ namespace Krauler
 
         public void Flush()
         {
-            File.WriteAllText(LogFile, Stream);
+            if (!Directory.Exists(Config.LoggingDir)) Directory.CreateDirectory(Config.LoggingDir);
+
+            var time = DateTime.Now;
+            string file =
+                $"{Config.LoggingDir}Protocol-{time.ToShortDateString().Replace('/', '-')}-{time.TimeOfDay.Hours}-{time.TimeOfDay.Minutes}-{time.TimeOfDay.Seconds}.txt";
+            File.WriteAllText(file, Stream);
         }
     }
 }

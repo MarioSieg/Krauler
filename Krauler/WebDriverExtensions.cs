@@ -21,6 +21,7 @@ namespace Krauler
                 return null;
             }
         }
+
         public static IWebElement? FindElementSafe(this IWebElement element, By by)
         {
             try
