@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using static Krauler.Utility;
+using CsvHelper;
+using System.IO;
+using System.Text;
 
 namespace Krauler.Crawlers
 {
@@ -43,17 +46,20 @@ namespace Krauler.Crawlers
 
     public struct GoogleCrawlerRawData
     {
-        public string Text;
+        public string RawUrl;
+        public string RawUrlTitle;
+        public string? RawUrlDescription;
     }
 
     public struct GoogleCrawlerResult
     {
-        public string Url;
-        public string Description;
+        public string Url { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
 
         public override string ToString()
         {
-            return Url;
+            return "\r\n" + Url + ": " + Title + "\r\n >> " + Description;
         }
     }
 
@@ -99,19 +105,21 @@ namespace Krauler.Crawlers
 
         public override void OnDispatch()
         {
-            // Google Search URL params 
-            // gws =google web server
-            // rd = redirected
-            // cr = country reffered
-            // ei = timestamp. https://deedpolloffice.com/blog/articles/decoding-ei-parameter
-            // gs_lcp = Not sure, but it's Protobuf encoded. Edit: Someone said in replies this is likely to encode to a physical location, which also seems likely.
-            // sclient = Where you came from (so if you used images.google.com it would be img)
-            // bih = Browser height (pixels)
-            // q = The query it's actually searching for. Usually the same as oq unless you clicked on a suggested search term, then oq would be the text you typed and q is what you clicked on (what's actually being searched for)
-            // tbm=isch tells it you want to search Google Images. It stands for to be matched = image search.
-            // ved decodes to tell Google what links you clicked on previous pages on Google to get to the current page (https://valentin.app/ved.html)
-            // oq = The original query you wanted to search for that you typed in (see q)
-
+            /*
+            Google Search URL params 
+            gws =google web server
+            rd = redirected
+            cr = country reffered
+            ei = timestamp. https://deedpolloffice.com/blog/articles/decoding-ei-parameter
+            gs_lcp = Not sure, but it's Protobuf encoded. Edit: Someone said in replies this is likely to encode to a physical location, which also seems likely.
+            sclient = Where you came from (so if you used images.google.com it would be img)
+            bih = Browser height (pixels)
+            q = The query it's actually searching for. Usually the same as oq unless you clicked on a suggested search term, then oq would be the text you typed and q is what you clicked on (what's actually being searched for)
+            tbm=isch tells it you want to search Google Images. It stands for to be matched = image search.
+            ved decodes to tell Google what links you clicked on previous pages on Google to get to the current page (https://valentin.app/ved.html)
+            oq = The original query you wanted to search for that you typed in (see q)
+            */
+            
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
             const string? query = "KevinKlang";
             const ushort maxSearchPages = 5;
@@ -124,7 +132,7 @@ namespace Krauler.Crawlers
 
                 if (i == 1) // google confirm only at first call 
                 {
-                    if (_driver.FindElementSafe(By.TagName("button")) != null)
+                     if (_driver.FindElementSafe(By.TagName("button")) != null)
                         GoogleUsageConfirmer(By.TagName("button"));
 
                     if (_driver.FindElementSafe(By.XPath("//button[@id='zV9nZe']")) != null)
@@ -136,22 +144,30 @@ namespace Krauler.Crawlers
                 ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
                 SubmitData(searchResults.Select(x => new GoogleCrawlerRawData
                 {
-                    Text = x.GetAttribute("href")
+                    RawUrl = x.GetAttribute("href"),
+                    RawUrlTitle = x.Text,
+                    RawUrlDescription = x.FindElementSafe(By.XPath(".//following::div[@class='IsZvec']"))?.Text
                 }));
             }
+            
         }
 
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
             foreach (var raw in rawData!)
-                if (raw.Text.Contains("http"))
+            {
+                // exclude results from google cache archive or google internal links
+                if (raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
+                {
                     yield return new GoogleCrawlerResult
                     {
-                        Url = LinkParser.Match(raw.Text).Value,
-                        Description = string.Empty
+                        Url = raw.RawUrl,
+                        Title = raw.RawUrlTitle,
+                        Description = raw.RawUrlDescription ?? string.Empty,
                     };
-
-            DumpResults();
+                }
+            }
+           // DumpResults();
         }
 
         private void GoogleUsageConfirmer(By tagName)
@@ -174,8 +190,24 @@ namespace Krauler.Crawlers
 
         public override void OnDestroy()
         {
+            _driver?.Quit();
+            
+            var dir = Config.ResourcesDir;
+            string outputFile = "result.csv";
+            if (!Directory.Exists(dir))
+            {
+                throw new IOException($"Directory {dir} not existing");
+            }
+            
+            using var writer = new StreamWriter(dir+"/"+outputFile);
+            using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                //csvWriter.WriteHeader<GoogleCrawlerResult>();
+                csvWriter.WriteRecords(Results);
+            }
+            writer.Flush();
+
             //Thread.Sleep(20000);
-            //_chromeDriver?.Quit();
         }
     }
 }
