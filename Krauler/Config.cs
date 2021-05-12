@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Krauler
 {
@@ -25,6 +26,7 @@ namespace Krauler
         public const string ConfigDir = "Config/";
         public const string ResourcesDir = "Resources/";
         public const string LoggingDir = "Logs/";
+        public const string CrawledImages = "CrawledImages/";
 
         static Config()
         {
@@ -32,7 +34,7 @@ namespace Krauler
             JsonConvert.DefaultSettings = () =>
             {
                 var settings = new JsonSerializerSettings();
-                var item = new StringEnumConverter {CamelCaseText = true};
+                var item = new StringEnumConverter {NamingStrategy = new CamelCaseNamingStrategy()};
                 settings.Converters.Add(item);
                 return settings;
             };

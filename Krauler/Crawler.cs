@@ -105,6 +105,9 @@ namespace Krauler
 #endif
         }
 
+        /// <summary>
+        /// method that processes the data, to be overwritten in the crawler
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected virtual IEnumerable<TResult>? DataProcessor(IEnumerable<TRawData>? rawData)
         {

@@ -8,7 +8,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using CsvHelper;
 using System.IO;
-using System.Text;
 using System.Threading;
 
 namespace Krauler.Crawlers
@@ -50,11 +49,14 @@ namespace Krauler.Crawlers
         public string RawUrl;
         public string RawUrlTitle;
         public string? RawUrlDescription;
+        //Id = Interlocked.Increment(ref counter);
     }
 
     public struct GoogleCrawlerResult
     {
         public string Url { get; set; }
+        
+        public string Domain { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
@@ -68,10 +70,12 @@ namespace Krauler.Crawlers
     {
         private readonly GoogleCrawlerConfig _config;
         private IWebDriver? _driver;
+        private string _searchQuery;
 
         public GoogleCrawler() : base("GoogleCrawler", "")
         {
             _config = InitializeConfig<GoogleCrawler, GoogleCrawlerConfig>();
+            _searchQuery = "Kevin Klang";
         }
 
         public override void OnInitialize()
@@ -122,14 +126,14 @@ namespace Krauler.Crawlers
             */
             
             Debug.Assert(_driver != null, nameof(_driver) + " != null");
-            const string? query = "Singer Songwriter";
-            const ushort maxSearchPages = 2; // the number of pages to search
+            const ushort maxSearchPages = 3; // the number of pages to search
             const ushort maxResults = 5; // the number of max results
-
+            // TODO: Implement functionality to define max results instead of maxSearchPages (optional)
+            
             for (uint i = 1; i < maxSearchPages; ++i)
             {
                 //GoogleLinksCrawler(query, i);
-                GoogleImageCrawler(query, i);
+                GoogleImageCrawler(_searchQuery, i);
             }
             
         }
@@ -154,25 +158,28 @@ namespace Krauler.Crawlers
             }
 
             Debug.Assert(_driver != null, nameof(_driver) + " != null"); 
-            
-            if(_driver.FindElementSafe(By.XPath("/html/body/div[2]/c-wiz/div[3]/div[1]/div/div/div/div/div[5]/input"))!= null)
-                _driver.FindElement(By.XPath("/html/body/div[2]/c-wiz/div[3]/div[1]/div/div/div/div/div[5]/input")).Click();
+            var clickElement = _driver.FindElementSafe(By.XPath("/html/body/div[2]/c-wiz/div[3]/div[1]/div/div/div/div/div[5]/input"));
+            clickElement?.Click();
             Thread.Sleep(500);
 
             IWebElement resultsPanel = _driver.FindElement(By.Id("islmp"));
-            ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//a"));
-            IEnumerable<GoogleCrawlerRawData> inputData = searchResults.Select(x => new GoogleCrawlerRawData
+            // get urls
+            ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//div[@data-loaded='1']"));
+            IEnumerable<GoogleCrawlerRawData> rawData = searchResults.Select(x => new GoogleCrawlerRawData
             {
-                RawUrl = x.GetAttribute("href"),
-                RawUrlTitle = x.Text,
+                RawUrl = x.FindElements(By.TagName("a"))[1].GetAttribute("href"), // the where the full picture comes from is stored in the 2nd 'a' element
+                RawUrlTitle = x.FindElement(By.TagName("img")).GetAttribute("alt"),
+                RawUrlDescription = "_" + x.FindElement(By.TagName("img")).GetAttribute("src") // link to the resized google search result image
             });
-            SubmitData(inputData);
+
+            SubmitData(rawData);
+            
         }
         private void GoogleLinksCrawler(string query, uint i)
         {
-            var url = $"{_config.ServerHeader.Uri}/search?q={query}&start={(i - 1) * 10}";
+            var url = $"{_config.ServerHeader.Uri}/search?q=\"{query}\"&start={(i - 1) * 10}";
             Logger.Instance.WriteLine($"GoTo Url: {url}");
-            _driver.Navigate().GoToUrl(url);
+            _driver?.Navigate().GoToUrl(url);
 
             if (i == 1) // google confirm only at first call 
             {
@@ -194,6 +201,13 @@ namespace Krauler.Crawlers
             }));
         }
 
+        /// <summary>
+        /// Google Data Processor handles currently 
+        /// - link search
+        /// - image search and download
+        /// </summary>
+        /// <param name="rawData"></param>
+        /// <returns></returns>
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
             if (rawData == null || !rawData.Any())
@@ -207,14 +221,51 @@ namespace Krauler.Crawlers
                 {
                     yield return new GoogleCrawlerResult
                     {
-                        Url = raw.RawUrl,
+                        Url = Uri.IsWellFormedUriString(raw.RawUrl, UriKind.RelativeOrAbsolute) ? raw.RawUrl : string.Empty,
                         Title = raw.RawUrlTitle,
-                        Description = raw.RawUrlDescription ?? string.Empty,
+                        Description = raw.RawUrlDescription!.StartsWith("_") ? SaveImageFromDataUri(raw.RawUrl, raw.RawUrlDescription.Substring(1)) : raw.RawUrlDescription ?? string.Empty,
                     };
                 }
             }
             DumpResults();
         }
+
+        /// <summary>
+        /// Save an image from a data uri string eg data:image/png;base64,IMAGE_BYTE_CODE
+        /// to Config.CrawledImages with the query subfolder and a date folder, and a hash derived from the dataUri as image name.
+        /// TODO: Potential error handling, retrieve filetype from dataUri, move foldercreating etc somewhere higher so that this function only writes the image, switch beteen DataUri and Url for filesaving
+        /// Might not work in IE (https://en.wikipedia.org/wiki/Data_URI_scheme)
+        /// </summary>
+        /// <param name="urlName">the main url relating to the website the image is from</param>
+        /// <param name="dataUri">data uri string, assumed never to be null</param>
+        /// <returns>the image file path string</returns>
+        private string SaveImageFromDataUri(string urlName ,string dataUri)
+        {
+            var time = DateTime.Now;
+            var saveImagesFolderPath = Config.CrawledImages +_searchQuery + "/" + time.ToShortDateString().Replace('/', '-');
+            string imageName = $"{dataUri.GetHashCode():X}";
+            
+            if (!Directory.Exists(saveImagesFolderPath)) Directory.CreateDirectory(saveImagesFolderPath);
+            
+            var b64 = dataUri.Split(",".ToCharArray(), 2);
+
+            var imageFilePath = $@"{saveImagesFolderPath}/{imageName}.jpg";
+            
+            try
+            {
+                byte[] byteArray = Convert.FromBase64String(b64[1]);
+                File.WriteAllBytes(imageFilePath, byteArray);
+                Logger.Instance.WriteLine($"Write image from  {urlName} to {imageFilePath}");
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Logger.Instance.WriteLine($"Error: {urlName} to {dataUri}");
+                imageFilePath = dataUri;
+            }
+
+            return imageFilePath;
+        }
+        
 
         private void GoogleUsageConfirmer(By tagName)
         {
