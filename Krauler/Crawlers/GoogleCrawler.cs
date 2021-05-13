@@ -8,7 +8,9 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using CsvHelper;
 using System.IO;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Krauler.Crawlers
 {
@@ -58,7 +60,7 @@ namespace Krauler.Crawlers
         
         public string Domain { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public override string ToString()
         {
@@ -70,12 +72,17 @@ namespace Krauler.Crawlers
     {
         private readonly GoogleCrawlerConfig _config;
         private IWebDriver? _driver;
-        private string _searchQuery;
-
+        private readonly string _searchQuery;
+        /// <summary>
+        /// The HttpClient for crawling images.
+        /// ! one client for all requests: https://www.aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
+        /// </summary>
+        private static readonly HttpClient Client = new();
+        
         public GoogleCrawler() : base("GoogleCrawler", "")
         {
             _config = InitializeConfig<GoogleCrawler, GoogleCrawlerConfig>();
-            _searchQuery = "Kevin Klang";
+            _searchQuery = "Karl Kleber";
         }
 
         public override void OnInitialize()
@@ -130,6 +137,7 @@ namespace Krauler.Crawlers
             const ushort maxResults = 5; // the number of max results
             // TODO: Implement functionality to define max results instead of maxSearchPages (optional)
             
+                
             for (uint i = 1; i < maxSearchPages; ++i)
             {
                 //GoogleLinksCrawler(query, i);
@@ -137,10 +145,19 @@ namespace Krauler.Crawlers
             }
             
         }
+        
+        /// <summary>
+        /// Crawls images by keywords via google and saves them in a folder.
+        /// Establishes HttpClient connection to download images from urls as well as downloads dataUris from the search results directly.
+        /// More images are crawled via scrolling.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="i"></param>
         private void GoogleImageCrawler(string query, uint i)
         {
             if (i == 1) // google confirm only at first call 
             {
+                // ToDo: optimize header config with referal etc
                 var url = $"{_config.ServerHeader.Uri}/search?q={query}&tbm=isch";
                 Logger.Instance.WriteLine($"GoTo Url: {url}");
                 Debug.Assert(_driver != null, nameof(_driver) + " != null");
@@ -223,7 +240,7 @@ namespace Krauler.Crawlers
                     {
                         Url = Uri.IsWellFormedUriString(raw.RawUrl, UriKind.RelativeOrAbsolute) ? raw.RawUrl : string.Empty,
                         Title = raw.RawUrlTitle,
-                        Description = raw.RawUrlDescription!.StartsWith("_") ? SaveImageFromDataUri(raw.RawUrl, raw.RawUrlDescription.Substring(1)) : raw.RawUrlDescription ?? string.Empty,
+                        Description = raw.RawUrlDescription!.StartsWith("_") ? SaveImageFromDataUri(raw.RawUrl, raw.RawUrlDescription.Substring(1)).Result : raw.RawUrlDescription ?? string.Empty,
                     };
                 }
             }
@@ -231,36 +248,63 @@ namespace Krauler.Crawlers
         }
 
         /// <summary>
-        /// Save an image from a data uri string eg data:image/png;base64,IMAGE_BYTE_CODE
-        /// to Config.CrawledImages with the query subfolder and a date folder, and a hash derived from the dataUri as image name.
-        /// TODO: Potential error handling, retrieve filetype from dataUri, move foldercreating etc somewhere higher so that this function only writes the image, switch beteen DataUri and Url for filesaving
+        /// Save an image from url to local folder.
+        /// Possible urls:
+        /// - data uri string eg data:image/png;base64,IMAGE_BYTE_CODE
+        /// - url directing directly to an image
+        /// Download to Config.CrawledImages with the query subfolder and a date folder, and a hash derived from the dataUri as image name.
+        /// TODO: Potential error handling, retrieve filetype from dataUri, move foldercreating etc somewhere higher so that this function only writes the image
+        /// ToDO: @Mario: pruefe bitte hier, ob das mit dem threading so ok ist (die http methoden sind per default async)
         /// Might not work in IE (https://en.wikipedia.org/wiki/Data_URI_scheme)
         /// </summary>
         /// <param name="urlName">the main url relating to the website the image is from</param>
-        /// <param name="dataUri">data uri string, assumed never to be null</param>
+        /// <param name="imageUri">string referring to data-Uri or image-only-url, assumed never to be null</param>
         /// <returns>the image file path string</returns>
-        private string SaveImageFromDataUri(string urlName ,string dataUri)
+        private async Task<string> SaveImageFromDataUri(string urlName ,string imageUri)
         {
             var time = DateTime.Now;
             var saveImagesFolderPath = Config.CrawledImages +_searchQuery + "/" + time.ToShortDateString().Replace('/', '-');
-            string imageName = $"{dataUri.GetHashCode():X}";
+            string imageName = $"{imageUri.GetHashCode():X}";
             
             if (!Directory.Exists(saveImagesFolderPath)) Directory.CreateDirectory(saveImagesFolderPath);
             
-            var b64 = dataUri.Split(",".ToCharArray(), 2);
-
             var imageFilePath = $@"{saveImagesFolderPath}/{imageName}.jpg";
-            
-            try
+
+            if (imageUri.StartsWith("data"))
             {
-                byte[] byteArray = Convert.FromBase64String(b64[1]);
-                File.WriteAllBytes(imageFilePath, byteArray);
-                Logger.Instance.WriteLine($"Write image from  {urlName} to {imageFilePath}");
+                var b64 = imageUri.Split(",".ToCharArray(), 2);
+                try
+                {
+                    byte[] byteArray = Convert.FromBase64String(b64[1]);
+                    await File.WriteAllBytesAsync(imageFilePath, byteArray);
+                    Logger.Instance.WriteLine($"Write [data] image from  {urlName} to {imageFilePath}");
+                }
+                catch (Exception e)
+                {
+                    Logger.Instance.WriteLine($"I/O Error in {urlName} with {imageUri}: {e}");
+                    imageFilePath = imageUri;
+                }
+            } else if (Uri.IsWellFormedUriString(imageUri, UriKind.RelativeOrAbsolute))
+            {
+                try
+                {
+                    using (HttpResponseMessage response = await Client.GetAsync(imageUri))
+                    {
+                        // ToDo: verify responses before download
+                        byte[] byteArray = await response.Content.ReadAsByteArrayAsync();
+                        await File.WriteAllBytesAsync(imageFilePath, byteArray);
+                    }
+                    Logger.Instance.WriteLine($"Write [url] image from {urlName} to {imageFilePath}");
+                }
+                catch (Exception e)
+                {
+                    Logger.Instance.WriteLine($"I/O Error in {urlName} with {imageUri}: {e}");
+                    imageFilePath = imageUri;
+                }
             }
-            catch (IndexOutOfRangeException)
+            else
             {
-                Logger.Instance.WriteLine($"Error: {urlName} to {dataUri}");
-                imageFilePath = dataUri;
+                imageFilePath = "Download failed [unknown Uri type]: " + imageUri;
             }
 
             return imageFilePath;
