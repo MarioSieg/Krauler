@@ -341,7 +341,7 @@ namespace Krauler.Crawlers
 
         private void SaveToCsvFile()
         {
-            var dir = Config.ResourcesDir;
+            const string? dir = Config.OutputDir;
             string outputFile = "result.csv";
             if (!Directory.Exists(dir))
             {
