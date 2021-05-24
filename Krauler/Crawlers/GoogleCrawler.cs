@@ -82,7 +82,7 @@ namespace Krauler.Crawlers
         public GoogleCrawler() : base("GoogleCrawler", "")
         {
             _config = InitializeConfig<GoogleCrawler, GoogleCrawlerConfig>();
-            _searchQuery = "Karl Kleber";
+            _searchQuery = "singer songwriter";
         }
 
         public override void OnInitialize()
@@ -181,7 +181,7 @@ namespace Krauler.Crawlers
 
             IWebElement resultsPanel = _driver.FindElement(By.Id("islmp"));
             // get urls
-            ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//div[@data-loaded='1']"));
+            ReadOnlyCollection<IWebElement> searchResults = resultsPanel.FindElements(By.XPath(".//div[@data-ictx='1']"));
             IEnumerable<GoogleCrawlerRawData> rawData = searchResults.Select(x => new GoogleCrawlerRawData
             {
                 RawUrl = x.FindElements(By.TagName("a"))[1].GetAttribute("href"), // the where the full picture comes from is stored in the 2nd 'a' element
@@ -227,11 +227,12 @@ namespace Krauler.Crawlers
         /// <returns></returns>
         protected override IEnumerable<GoogleCrawlerResult> DataProcessor(IEnumerable<GoogleCrawlerRawData>? rawData)
         {
-            if (rawData == null || !rawData.Any())
+            var googleCrawlerRawDatas = (rawData ?? throw new ArgumentNullException(nameof(rawData))).ToList();
+            if (!googleCrawlerRawDatas.Any())
             {
                 yield break;
             }
-            foreach (var raw in rawData)
+            foreach (var raw in googleCrawlerRawDatas)
             {
                 // exclude results from google cache archive or google internal links
                 if (!string.IsNullOrEmpty(raw.RawUrl) && raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
