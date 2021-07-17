@@ -83,7 +83,6 @@ namespace Krauler
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void SubmitData(IEnumerable<TRawData>? inputDataList, bool createClonedData = true)
         {
             Span<DateTime> timings = stackalloc DateTime[2];
