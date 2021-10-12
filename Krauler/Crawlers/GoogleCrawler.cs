@@ -51,7 +51,6 @@ namespace Krauler.Crawlers
         public string RawUrl;
         public string RawUrlTitle;
         public string? RawUrlDescription;
-        //Id = Interlocked.Increment(ref counter);
     }
 
     public struct GoogleCrawlerResult
@@ -334,10 +333,7 @@ namespace Krauler.Crawlers
         {
             Thread.Sleep(20000);
             _driver?.Quit();
-
             //SaveToCsvFile();
-
-            
         }
 
         private void SaveToCsvFile()
