@@ -115,13 +115,13 @@ namespace Krauler.Crawlers
         {
             try
             {
-                const string uri = "/WebOffice_flex/rest/services/project/b9daf20c-0aa3-47bd-8b1c-6d696727ad13/Radolfzell/Radolfzell_Dyn/MapServer/export";
+                const string uri = "https://hosting.aed-synergis.de/mapgis/rest/services/DTK/DTK_webmercator/MapServer/tile/13/2854/4299";
                 const string method = "GET";
                 const string usr = "", pwd = "";
-                const string domain = "radolfzell.aed-synergis.de";
+                const string domain = "https://hosting.aed-synergis.de";
                 const ushort timeout = 5000;
 
-                var request = (FileWebRequest)WebRequest.Create(uri);
+                var request = (HttpWebRequest)WebRequest.Create(uri);
                 request.Method = method;
                 NetworkCredential networkCredential = new NetworkCredential(usr, pwd, domain);
                 request.Credentials = networkCredential;
