@@ -6,11 +6,14 @@ using System.Globalization;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
 using CsvHelper;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Krauler.Enums;
 
 namespace Krauler.Crawlers
 {
@@ -86,32 +89,68 @@ namespace Krauler.Crawlers
 
         public override void OnInitialize()
         {
-            var service = ChromeDriverService.CreateDefaultService();
-            service.HideCommandPromptWindow = _config.ChromeDriverHideCommandPromptWindow;
-
-            var options = new ChromeOptions {PageLoadStrategy = _config.PageLoadStrategy};
-            options.AddArguments(_config.DefaultChromeOptions);
-
-            // choose a random proxy from file list
-            if (_config.UseProxy)
+            if (_config.SeleniumDriver == SeleniumDriver.Chrome)
             {
-                var rand = new Random();
-                var proxy = CrawlerFactory.Proxies.Value[rand.Next(CrawlerFactory.Proxies.Value.Length)];
-                options.AddArgument("--proxy-server=http://" + proxy);
-            }
+                var options = CreateChromeOptions(out var service);
 
-            // choose a random proxy from file list
-            if (_config.SetUserAgent)
+                _driver = new ChromeDriver(service, options);
+            }
+            else if (_config.SeleniumDriver == SeleniumDriver.Firefox)
             {
-                var rand = new Random();
-                var userAgent = CrawlerFactory.UserAgents.Value[rand.Next(CrawlerFactory.UserAgents.Value.Length)];
-                options.AddArgument("--user-agent=" + userAgent);
+                var options = CreateFirefoxOptions();
+                _driver = new FirefoxDriver(options);
             }
-
-            _driver = new ChromeDriver(service, options);
+            else
+            {
+                throw new ArgumentException(
+                    $"Selenium driver is not set in {GetType()}");
+            }
 
             _driver.Manage().Cookies.DeleteAllCookies();
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+        }
+
+        private FirefoxOptions? CreateFirefoxOptions()
+        {
+            var options = new FirefoxOptions();
+            if (_config.UseProxy)
+            {
+                Proxy proxy = new()
+                {
+                    HttpProxy = Utility.GetRandomProxy()
+                };
+                options.Proxy = proxy;
+            }
+            if (_config.SetUserAgent)
+            {
+                var userAgent = Utility.GetRandomUserAgent();
+                options?.AddArgument("--user-agent=" + userAgent);
+            }
+   
+            return options;
+        }
+
+        private ChromeOptions? CreateChromeOptions(out ChromeDriverService? service)
+        {
+            var options = new ChromeOptions { PageLoadStrategy = _config.PageLoadStrategy };
+            options.AddArguments(_config.DefaultChromeOptions);
+            options.AddArguments(new List<string>
+                { "headless", "disable-gpu" });
+
+            service = ChromeDriverService.CreateDefaultService();
+            service.HideCommandPromptWindow = _config.ChromeDriverHideCommandPromptWindow;
+            if (_config.UseProxy)
+            {
+                var proxy = Utility.GetRandomProxy();
+                options?.AddArgument("--proxy-server=http://" + proxy);
+            }
+            if (_config.SetUserAgent)
+            {
+                var userAgent = Utility.GetRandomUserAgent();
+                options?.AddArgument("--user-agent=" + userAgent);
+            }
+
+            return options;
         }
 
         public override void OnDispatch()

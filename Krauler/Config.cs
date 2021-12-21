@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Krauler.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -19,11 +20,15 @@ namespace Krauler
         }
 
         public ServerHeader ServerHeader { get; set; }
+        /// <summary>
+        /// The browser driver .exe that is used to browse
+        /// </summary>
+        public SeleniumDriver SeleniumDriver { get; set; }
     }
 
     public static class Config
     {
-        public const string ConfigDir = "Config/";
+        private const string ConfigDir = "Config/";
         public const string ResourcesDir = "Resources/";
         public const string OutputDir = "Output/";
         public const string LoggingDir = "Logs/";

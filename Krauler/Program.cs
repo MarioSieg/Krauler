@@ -10,11 +10,11 @@ namespace Krauler
         {
             try
             {
-                Logger.Instance.WriteLine("Krauler (c) Copyright Kevin Sieg, Mario Sieg 2021!");
+                Logger.Instance.WriteLine("Krauler (c) Copyright Kevin Sieg, Mario Sieg 2022");
                 Utility.SetCorrectWorkingDir();
                 Logger.Instance.WriteLine($"Loaded {CrawlerFactory.Proxies.Value.Length} proxies!");
                 Logger.Instance.WriteLine($"Loaded {CrawlerFactory.UserAgents.Value.Length} user agents!");
-                await CrawlerFactory.ConstructAndDispatchAsync<RadolfzellCrawler>();
+                await CrawlerFactory.ConstructAndDispatchAsync<GoogleCrawler>();
             }
             catch (Exception e)
             {

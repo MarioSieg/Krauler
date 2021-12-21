@@ -48,5 +48,23 @@ namespace Krauler
                     $"{file}.{time.ToShortDateString().Replace('/', '-')}-{time.TimeOfDay.Hours}-{time.TimeOfDay.Minutes}-{time.TimeOfDay.Seconds}.bak";
             }
         }
+
+        internal static string? GetRandomUserAgent()
+        {
+            var rand = new Random();
+            var userAgent =
+                CrawlerFactory.UserAgents.Value[
+                    rand.Next(CrawlerFactory.UserAgents.Value.Length)];
+            return userAgent;
+        }
+        
+        internal static string? GetRandomProxy()
+        {
+            var rand = new Random();
+            var proxy =
+                CrawlerFactory.Proxies.Value[
+                    rand.Next(CrawlerFactory.Proxies.Value.Length)];
+            return proxy;
+        }
     }
 }

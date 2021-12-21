@@ -114,7 +114,7 @@ namespace Krauler
         }
 
         /// <summary>
-        ///     Initialize config type and try to load the file.
+        /// Initialize config type and try to load the file.
         /// </summary>
         /// <typeparam name="TSelf"></typeparam>
         /// <typeparam name="TConfig"></typeparam>
