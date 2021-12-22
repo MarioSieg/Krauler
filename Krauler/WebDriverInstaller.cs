@@ -10,12 +10,8 @@ namespace Krauler
     {
         private static readonly Lazy<string[]> WebDriverUrls = new(() => File.ReadAllLines(Config.ResourcesDir + "WebDriverInstallSources.txt"));
 
-        private static readonly string[] TargetDriverFiles =
-        {
-            "?",
-            "geckodriver.exe",
-            "?"
-        };
+        private static readonly Lazy<string[]> TargetDriverFiles =
+            new(() => File.ReadAllLines(Config.ResourcesDir + "WebDriverExecutables.txt")); 
 
         public static void InstallDriver(WebDriverType type)
         {
@@ -24,7 +20,7 @@ namespace Krauler
                 Logger.Instance.WriteLine($"Beginning installation of web driver: {type}");
 
                 var relDir = Config.DriverDir + type + "/";
-                var target = relDir + TargetDriverFiles[(int) type];
+                var target = relDir + TargetDriverFiles.Value[(int) type];
                 var targetInstall = AppDomain.CurrentDomain.BaseDirectory + "/" + Path.GetFileName(target);
 
                 Directory.CreateDirectory(relDir);
@@ -73,6 +69,10 @@ namespace Krauler
                     throw new Exception($"Target file {target} not found in drive installation!");
                 }
                 Logger.Instance.WriteLine($"Finalizing installation: {targetInstall}");
+                if (File.Exists(targetInstall))
+                {
+                    File.Delete(targetInstall);
+                }
                 File.Copy(target, targetInstall);
                 Logger.Instance.WriteLine($"Installed web driver: {type}");
             }
