@@ -26,14 +26,14 @@ namespace Krauler
         /// <param name="times">How often to call OnDispatch().</param>
         /// <returns>The task.</returns>
         public static Task ConstructAndDispatchAsync<TCrawler>(ulong times = 1)
-            where TCrawler : ICrawler, new()
+            where TCrawler : CrawlerEvents, new()
         {
             return Task.Run(() =>
             {
                 var crawler = new TCrawler();
-                crawler.OnInitialize();
-                for (ulong i = 0; i < times; ++i) crawler.OnDispatch();
-                crawler.OnDestroy();
+                crawler.DispatchOnInitialize();
+                for (ulong i = 0; i < times; ++i) crawler.DispatchOnDispatch();
+                crawler.DispatchOnDestroy();
             });
         }
 
@@ -45,19 +45,19 @@ namespace Krauler
         /// <param name="timeout">Timeout to sleep between each call.</param>
         /// <returns>The task.</returns>
         public static Task ConstructAndDispatchAsync<TCrawler>(ulong times, TimeSpan timeout)
-            where TCrawler : ICrawler, new()
+            where TCrawler : CrawlerEvents, new()
         {
             return Task.Run(() =>
             {
                 var crawler = new TCrawler();
-                crawler.OnInitialize();
+                crawler.DispatchOnInitialize();
                 for (ulong i = 0; i < times; ++i)
                 {
-                    crawler.OnDispatch();
+                    crawler.DispatchOnDispatch();
                     Thread.Sleep(timeout);
                 }
 
-                crawler.OnDestroy();
+                crawler.DispatchOnDestroy();
             });
         }
     }

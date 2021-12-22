@@ -55,27 +55,26 @@ namespace Krauler.Crawlers
         public AltglasContainer[] Container;
     }
 
-    public sealed class RadolfzellCrawler : Crawler<RadolfzellCrawlerRawData, RadolfzellCrawlerResult>
+    public sealed class RadolfzellCrawler : Crawler<RadolfzellCrawlerRawData, RadolfzellCrawlerResult, RadolfzellCrawler, RadolfzellCrawlerConfig>
     {
-        private readonly RadolfzellCrawlerConfig _config;
         private IWebDriver? _driver;
         private static readonly HttpClient Client = new();
 
         public RadolfzellCrawler() : base("RadolfzellCrawler", "Crawlt positionsdaten für das Coding-Camp 2021!")
         {
-            _config = InitializeConfig<RadolfzellCrawler, RadolfzellCrawlerConfig>();
+
         }
 
-        public override void OnInitialize()
+        protected override void OnInitialize()
         {
             var service = ChromeDriverService.CreateDefaultService();
-            service.HideCommandPromptWindow = _config.ChromeDriverHideCommandPromptWindow;
+            service.HideCommandPromptWindow = Config.ChromeDriverHideCommandPromptWindow;
 
-            var options = new ChromeOptions {PageLoadStrategy = _config.PageLoadStrategy};
-            options.AddArguments(_config.DefaultChromeOptions);
+            var options = new ChromeOptions {PageLoadStrategy = Config.PageLoadStrategy};
+            options.AddArguments(Config.DefaultChromeOptions);
 
             // choose a random proxy from file list
-            if (_config.UseProxy)
+            if (Config.UseProxy)
             {
                 var rand = new Random();
                 string proxy = CrawlerFactory.Proxies.Value[rand.Next(CrawlerFactory.Proxies.Value.Length)];
@@ -83,7 +82,7 @@ namespace Krauler.Crawlers
             }
 
             // choose a random proxy from file list
-            if (_config.SetUserAgent)
+            if (Config.SetUserAgent)
             {
                 var rand = new Random();
                 string userAgent = CrawlerFactory.UserAgents.Value[rand.Next(CrawlerFactory.UserAgents.Value.Length)];
@@ -146,9 +145,9 @@ namespace Krauler.Crawlers
             }
         }
 
-        public override void OnDispatch()
+        protected override void OnDispatch()
         {
-            Uri url = this._config.ServerHeader.Uri;
+            Uri url = this.Config.ServerHeader.Uri;
             IWebDriver driver = this._driver ?? throw new InvalidOperationException();
             _driver.Navigate().GoToUrl(url);
             byte[] image = HttpRequestRadoImage() ?? throw new Exception("Failed to crawl image!");
@@ -161,7 +160,7 @@ namespace Krauler.Crawlers
             yield break;
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             
         }

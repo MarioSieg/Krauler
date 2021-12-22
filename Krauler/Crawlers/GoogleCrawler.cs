@@ -13,7 +13,6 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Krauler.Enums;
 
 namespace Krauler.Crawlers
 {
@@ -70,9 +69,8 @@ namespace Krauler.Crawlers
         }
     }
 
-    public sealed class GoogleCrawler : Crawler<GoogleCrawlerRawData, GoogleCrawlerResult>
+    public sealed class GoogleCrawler : Crawler<GoogleCrawlerRawData, GoogleCrawlerResult, GoogleCrawler, GoogleCrawlerConfig>
     {
-        private readonly GoogleCrawlerConfig _config;
         private IWebDriver? _driver;
         private readonly string _searchQuery;
         /// <summary>
@@ -81,21 +79,20 @@ namespace Krauler.Crawlers
         /// </summary>
         private static readonly HttpClient Client = new();
         
-        public GoogleCrawler() : base("GoogleCrawler", "")
+        public GoogleCrawler() : base(nameof(GoogleCrawler), "")
         {
-            _config = InitializeConfig<GoogleCrawler, GoogleCrawlerConfig>();
             _searchQuery = "singer songwriter";
         }
 
-        public override void OnInitialize()
+        protected override void OnInitialize()
         {
-            if (_config.SeleniumDriver == SeleniumDriver.Chrome)
+            if (Config.WebDriverType == WebDriverType.Chrome)
             {
                 var options = CreateChromeOptions(out var service);
 
                 _driver = new ChromeDriver(service, options);
             }
-            else if (_config.SeleniumDriver == SeleniumDriver.Firefox)
+            else if (Config.WebDriverType == WebDriverType.Firefox)
             {
                 var options = CreateFirefoxOptions();
                 _driver = new FirefoxDriver(options);
@@ -113,7 +110,7 @@ namespace Krauler.Crawlers
         private FirefoxOptions? CreateFirefoxOptions()
         {
             var options = new FirefoxOptions();
-            if (_config.UseProxy)
+            if (Config.UseProxy)
             {
                 Proxy proxy = new()
                 {
@@ -121,7 +118,7 @@ namespace Krauler.Crawlers
                 };
                 options.Proxy = proxy;
             }
-            if (_config.SetUserAgent)
+            if (Config.SetUserAgent)
             {
                 var userAgent = Utility.GetRandomUserAgent();
                 options?.AddArgument("--user-agent=" + userAgent);
@@ -132,19 +129,19 @@ namespace Krauler.Crawlers
 
         private ChromeOptions? CreateChromeOptions(out ChromeDriverService? service)
         {
-            var options = new ChromeOptions { PageLoadStrategy = _config.PageLoadStrategy };
-            options.AddArguments(_config.DefaultChromeOptions);
+            var options = new ChromeOptions { PageLoadStrategy = Config.PageLoadStrategy };
+            options.AddArguments(Config.DefaultChromeOptions);
             options.AddArguments(new List<string>
                 { "headless", "disable-gpu" });
 
             service = ChromeDriverService.CreateDefaultService();
-            service.HideCommandPromptWindow = _config.ChromeDriverHideCommandPromptWindow;
-            if (_config.UseProxy)
+            service.HideCommandPromptWindow = Config.ChromeDriverHideCommandPromptWindow;
+            if (Config.UseProxy)
             {
                 var proxy = Utility.GetRandomProxy();
                 options?.AddArgument("--proxy-server=http://" + proxy);
             }
-            if (_config.SetUserAgent)
+            if (Config.SetUserAgent)
             {
                 var userAgent = Utility.GetRandomUserAgent();
                 options?.AddArgument("--user-agent=" + userAgent);
@@ -153,7 +150,7 @@ namespace Krauler.Crawlers
             return options;
         }
 
-        public override void OnDispatch()
+        protected override void OnDispatch()
         {
             /*
             Google Search URL params 
@@ -196,7 +193,7 @@ namespace Krauler.Crawlers
             if (i == 1) // google confirm only at first call 
             {
                 // ToDo: optimize header config with referal etc
-                var url = $"{_config.ServerHeader.Uri}/search?q={query}&tbm=isch";
+                var url = $"{Config.ServerHeader.Uri}/search?q={query}&tbm=isch";
                 Logger.Instance.WriteLine($"GoTo Url: {url}");
                 Debug.Assert(_driver != null, nameof(_driver) + " != null");
                 
@@ -232,7 +229,7 @@ namespace Krauler.Crawlers
         }
         private void GoogleLinksCrawler(string query, uint i)
         {
-            var url = $"{_config.ServerHeader.Uri}/search?q=\"{query}\"&start={(i - 1) * 10}";
+            var url = $"{Config.ServerHeader.Uri}/search?q=\"{query}\"&start={(i - 1) * 10}";
             Logger.Instance.WriteLine($"GoTo Url: {url}");
             _driver?.Navigate().GoToUrl(url);
 
@@ -273,7 +270,7 @@ namespace Krauler.Crawlers
             foreach (var raw in googleCrawlerRawDatas)
             {
                 // exclude results from google cache archive or google internal links
-                if (!string.IsNullOrEmpty(raw.RawUrl) && raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(_config.ServerHeader.Uri.Host))
+                if (!string.IsNullOrEmpty(raw.RawUrl) && raw.RawUrl.Contains("http") && !raw.RawUrl.Contains("webcache") && !raw.RawUrl.Contains(Config.ServerHeader.Uri.Host))
                 {
                     yield return new GoogleCrawlerResult
                     {
@@ -302,7 +299,7 @@ namespace Krauler.Crawlers
         private async Task<string> SaveImageFromDataUri(string urlName ,string imageUri)
         {
             var time = DateTime.Now;
-            var saveImagesFolderPath = Config.CrawledImages +_searchQuery + "/" + time.ToShortDateString().Replace('/', '-');
+            var saveImagesFolderPath = Krauler.Config.CrawledImages +_searchQuery + "/" + time.ToShortDateString().Replace('/', '-');
             string imageName = $"{imageUri.GetHashCode():X}";
             
             if (!Directory.Exists(saveImagesFolderPath)) Directory.CreateDirectory(saveImagesFolderPath);
@@ -368,7 +365,7 @@ namespace Krauler.Crawlers
                 }
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             Thread.Sleep(20000);
             _driver?.Quit();
@@ -377,7 +374,7 @@ namespace Krauler.Crawlers
 
         private void SaveToCsvFile()
         {
-            const string? dir = Config.OutputDir;
+            const string? dir = Krauler.Config.OutputDir;
             string outputFile = "result.csv";
             if (!Directory.Exists(dir))
             {

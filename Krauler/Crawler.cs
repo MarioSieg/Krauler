@@ -11,10 +11,10 @@ namespace Krauler
     /// <summary>
     ///     Base class for all crawlers.
     /// </summary>
-    public abstract class Crawler<TRawData, TResult> : ICrawler where TRawData : struct where TResult : struct
+    public abstract class Crawler<TRawData, TResult, TSelf, TConfig> : CrawlerEvents where TRawData : struct where TResult : struct where TConfig: BaseConfig, new() where TSelf: Crawler<TRawData, TResult, TSelf, TConfig>
     {
         private string? _childName;
-        private object? _config;
+        protected TConfig Config;
 
         /// <summary>
         ///     Construct with constant data.
@@ -26,6 +26,13 @@ namespace Krauler
         {
             Name = name;
             Description = description;
+            Config = InitializeConfig();
+            OnInitializeEvent += InstallDriverForInstance;
+        }
+
+        private void InstallDriverForInstance()
+        {
+            WebDriverInstaller.InstallDriver(Config.WebDriverType);
         }
 
         public List<TResult> Results { get; } = new(128);
@@ -40,18 +47,14 @@ namespace Krauler
         /// </summary>
         public string Description { get; protected set; }
 
-        public abstract void OnInitialize();
-
-        public abstract void OnDispatch();
-
-        public abstract void OnDestroy();
-
         public void DumpResults()
         {
             lock (Results)
             {
                 foreach (var x in Results)
+                {
                     Logger.Instance.WriteLine(x.ToString() ?? "NONE");
+                }
             }
         }
 
@@ -99,7 +102,7 @@ namespace Krauler
             SubmitData(DataProcessor, createClonedData ? clonedDataList : inputDataList);
             timings[1] = DateTime.Now;
 
-#if DEBUG
+#if DEBUG || VERBOSE
             Logger.Instance.WriteLine($"$Crawler execution timing: 0: {timings[0]}, 1: {timings[1]}");
 #endif
         }
@@ -119,24 +122,19 @@ namespace Krauler
         /// <typeparam name="TSelf"></typeparam>
         /// <typeparam name="TConfig"></typeparam>
         /// <returns></returns>
-        protected TConfig InitializeConfig<TSelf, TConfig>(TConfig? manual = null) where TConfig : BaseConfig, new()
+        protected TConfig InitializeConfig(TConfig? manual = null)
         {
             _childName = typeof(TSelf).Name;
             var cfg = manual ?? DeserializeConfig<TConfig>();
-            _config = cfg;
+            Config = cfg;
             return cfg;
-        }
-
-        protected TConfig? GetConfig<TConfig>()
-        {
-            return (TConfig?) _config;
         }
 
         public void SerializeConfig<T>(in T? data)
         {
             try
             {
-                Config.Serialize(data, _childName);
+                Krauler.Config.Serialize(data, _childName);
             }
             catch
             {
@@ -148,7 +146,7 @@ namespace Krauler
         {
             try
             {
-                var cfg = Config.Deserialize<T>(_childName);
+                var cfg = Krauler.Config.Deserialize<T>(_childName);
                 if (cfg != null) return cfg;
                 cfg = new T();
                 SerializeConfig(cfg);

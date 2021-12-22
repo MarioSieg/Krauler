@@ -1,6 +1,6 @@
-﻿namespace Krauler.Enums
+﻿namespace Krauler
 {
-    public enum SeleniumDriver
+    public enum WebDriverType : byte
     {
         Chrome,
         Firefox,

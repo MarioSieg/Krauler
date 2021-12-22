@@ -39,32 +39,31 @@ namespace Krauler.Crawlers
 
     public struct YoutubeCrawlerResult { }
 
-    public class YoutubeCrawler : Crawler<YoutubeCrawlerRawData, YoutubeCrawlerResult>
+    public class YoutubeCrawler : Crawler<YoutubeCrawlerRawData, YoutubeCrawlerResult, YoutubeCrawler, YoutubeCrawlerConfig>
     {
-        private readonly YoutubeCrawlerConfig _config;
         private IWebDriver? _driver;
 
         public YoutubeCrawler() : base("YoutubeCrawler", "")
         {
-            _config = InitializeConfig<YoutubeCrawler, YoutubeCrawlerConfig>();
+
         }
 
-        public override void OnInitialize()
+        protected override void OnInitialize()
         {
             var service = ChromeDriverService.CreateDefaultService();
-            service.HideCommandPromptWindow = _config.ChromeDriverHideCommandPromptWindow;
+            service.HideCommandPromptWindow = Config.ChromeDriverHideCommandPromptWindow;
 
-            var options = new ChromeOptions {PageLoadStrategy = _config.PageLoadStrategy};
-            options.AddArguments(_config.DefaultChromeOptions);
+            var options = new ChromeOptions {PageLoadStrategy = Config.PageLoadStrategy};
+            options.AddArguments(Config.DefaultChromeOptions);
 
-            if (_config.UseProxy)
+            if (Config.UseProxy)
             {
                 var rand = new Random();
                 var proxy = CrawlerFactory.Proxies.Value[rand.Next(CrawlerFactory.Proxies.Value.Length)];
                 options.AddArgument("--proxy-server=http://" + proxy);
             }
 
-            if (_config.SetUserAgent)
+            if (Config.SetUserAgent)
             {
                 var rand = new Random();
                 var userAgent = CrawlerFactory.UserAgents.Value[rand.Next(CrawlerFactory.UserAgents.Value.Length)];
@@ -77,10 +76,10 @@ namespace Krauler.Crawlers
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
-        public override void OnDispatch()
+        protected override void OnDispatch()
         {
             // Create tabs:
-            for (var i = 0; i < _config.TabCount - 1; ++i)
+            for (var i = 0; i < Config.TabCount - 1; ++i)
             {
                 _ = ((IJavaScriptExecutor?) _driver)?.ExecuteScript("window.open();");
                 Logger.Instance.WriteLine($"Creating tab: {i + 1}");
@@ -94,7 +93,7 @@ namespace Krauler.Crawlers
                 foreach (var handle in _driver?.WindowHandles!)
                 {
                     _driver.SwitchTo().Window(handle);
-                    _driver.Navigate().GoToUrl(_config.ServerHeader.Uri);
+                    _driver.Navigate().GoToUrl(Config.ServerHeader.Uri);
                     Logger.Instance.WriteLine($"Opening URL {++i}");
                 }
             }
@@ -134,6 +133,7 @@ namespace Krauler.Crawlers
             uint i = 0;
             if (_driver?.WindowHandles == null) throw new NullReferenceException();
             foreach (var handle in _driver.WindowHandles)
+            {
                 try
                 {
                     _driver.SwitchTo().Window(handle);
@@ -144,9 +144,10 @@ namespace Krauler.Crawlers
                 {
                     Logger.Instance.Write(ex);
                 }
+            }
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             //Thread.Sleep(20000);
             //_chromeDriver?.Quit();
